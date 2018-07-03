@@ -29,17 +29,29 @@ const asideMenuConfig = [
     name: '我的工作台',
     path: '/',
     icon: 'home',
-    code: 'dashborad',
   },
   {
-    name: '用户管理',
-    code: 'users:manage',
+    name: '系统管理',
     icon: 'yonghu',
+    path: '/sys',
     children: [
-      { name: '用户列表', path: '/users/list', code: 'users:list' }
+      { name: '用户管理', path: '/users/list', code: 'users:list' }
     ],
   },
-
 ];
 
+/**
+ * 递归处理子类path，继承父类path
+ */
+function recursiveMenuConfig(config = [], parent) {
+  config.forEach((item) => {
+    if (parent) {
+      item.path = parent.path + item.path;
+    }
+    if (Array.isArray(item.children)) {
+      recursiveMenuConfig(item.children, item);
+    }
+  });
+}
+recursiveMenuConfig(asideMenuConfig, null);
 export { headerMenuConfig, asideMenuConfig };

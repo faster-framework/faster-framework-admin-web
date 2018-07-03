@@ -11,6 +11,7 @@ import { enquire } from 'enquire-js';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import Logo from '@components/Logo';
+import { asideMenuConfig } from './../../menuConfig';
 import './scss/light.scss';
 import './scss/dark.scss';
 import { connect } from 'react-redux'
@@ -30,14 +31,12 @@ const TabPane = Tab.TabPane;
   }
 })
 export default class HeaderAsideFooterResponsiveLayout extends Component {
-
   static propTypes = {};
 
   static defaultProps = {};
 
   constructor(props) {
     super(props);
-    this.asideMenuConfig = this.props.userState.menuList;
     //如果token为空，跳转到登录页面
     const token = cookie.load('token');
     if (token == null) {
@@ -94,7 +93,6 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
       match: () => {
         this.setState({
           isScreen: type,
-          openDrawer: true,
           collapse,
         });
       },
@@ -130,6 +128,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
    * 当前展开的菜单项
    */
   onOpenChange = (openKeys) => {
+    console.info(openKeys)
     this.setState({
       openKeys,
     });
@@ -139,14 +138,8 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
   /**
    * 响应式时点击菜单进行切换
    */
-  onMenuClick = (args) => {
+  onMenuClick = () => {
     this.toggleMenu();
-    const menuItemProp = args.item.props;
-    const menuName = menuItemProp.name;
-    const path = menuItemProp.eventKey;
-    console.info(menuName)
-    console.info(path)
-    console.info("点击了！！！！")
   };
 
   /**
@@ -156,19 +149,21 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     const { match } = this.props;
     const matched = match.path;
     let openKeys = [];
-    Array.isArray(this.asideMenuConfig) &&
-      this.asideMenuConfig.length > 0 &&
-      this.asideMenuConfig.forEach((item, index) => {
+
+    Array.isArray(asideMenuConfig) &&
+      asideMenuConfig.forEach((item, index) => {
         if (matched.startsWith(item.path)) {
           openKeys = [`${index}`];
         }
       });
+
     return openKeys;
   };
 
   render() {
     const { location } = this.props;
     const { pathname } = location;
+
     return (
       <Layout
         style={{ minHeight: '100vh' }}
@@ -197,7 +192,6 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
               <Icon type="category" size="small" />
             </a>
           )}
-          {/* 变小以后点击这个区域隐藏左侧菜单栏 */}
           {this.state.openDrawer && (
             <div className="open-drawer-bg" onClick={this.toggleMenu} />
           )}
@@ -228,9 +222,9 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
               onOpenChange={this.onOpenChange}
               onClick={this.onMenuClick}
             >
-              {Array.isArray(this.asideMenuConfig) &&
-                this.asideMenuConfig.length > 0 &&
-                this.asideMenuConfig.filter(item => permissionUtil.hasPermission(item.code)).map((nav, index) => {
+              {Array.isArray(asideMenuConfig) &&
+                asideMenuConfig.length > 0 &&
+                asideMenuConfig.filter(item => permissionUtil.hasPermission(item.code)).map((nav, index) => {
                   if (nav.children && nav.children.length > 0) {
                     return (
                       <SubMenu
@@ -257,7 +251,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                             linkProps.to = item.path;
                           }
                           return (
-                            <MenuItem key={item.path} name={item.name}>
+                            <MenuItem key={item.path}>
                               <Link {...linkProps}>{item.name}</Link>
                             </MenuItem>
                           );
@@ -275,7 +269,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                     linkProps.to = nav.path;
                   }
                   return (
-                    <MenuItem key={nav.path} name={nav.name}>
+                    <MenuItem key={nav.path}>
                       <Link {...linkProps}>
                         <span>
                           {nav.icon ? (

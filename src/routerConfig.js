@@ -5,7 +5,7 @@
 import HeaderAsideFooterResponsiveLayout from './layouts/HeaderAsideFooterResponsiveLayout';
 import LoginLayout from './layouts/LoginLayout';
 import Dashboard from './pages/dashborad';
-import UserList from './pages/users';
+import UserList from './pages/system/users';
 import NotFound from './pages/notFound';
 import Login from './pages/login';
 
@@ -21,7 +21,7 @@ const routerConfig = [
     component: Dashboard,
   },
   {
-    path: '/users',
+    path: '/sys/users',
     layout: HeaderAsideFooterResponsiveLayout,
     component: UserList,
     children: [
@@ -29,7 +29,7 @@ const routerConfig = [
         path: 'list',
         layout: HeaderAsideFooterResponsiveLayout,
         component: UserList,
-      }
+      },
     ],
   },
   {
