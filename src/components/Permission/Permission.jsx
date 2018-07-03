@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import store from '@redux';
-import { hasPermission } from '@utils';
+import { permissionUtil } from '@utils';
 
 export default class Permission extends Component {
   render() {
@@ -8,7 +8,7 @@ export default class Permission extends Component {
     if (!Array.isArray(permissions) || permissions.length === 0) {
       return null;
     }
-    return hasPermission(this.props.code) ? this.props.children : null;
+    return permissionUtil.hasPermission(this.props.code) ? this.props.children : null;
   }
 }
 

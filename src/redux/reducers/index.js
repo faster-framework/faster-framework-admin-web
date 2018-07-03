@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 
 import userReducers from './userReducers';
+import loadingReducers from './loadingReducers';
 
 var reducers = combineReducers({
-    userReducers: userReducers
+    userState: userReducers,
+    loadingState: loadingReducers
 });
 
 export default reducers;

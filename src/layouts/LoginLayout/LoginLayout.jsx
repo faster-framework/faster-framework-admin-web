@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Layout from '@icedesign/layout';
 import Footer from './components/Footer';
-
 import './LoginLayout.scss';
+import { Overlay, Loading } from "@icedesign/base";
+import { connect } from 'react-redux'
 
+@connect(state => state)
 export default class UserLayout extends Component {
   static propTypes = {};
 
@@ -11,7 +13,16 @@ export default class UserLayout extends Component {
 
   render() {
     return (
+
       <Layout className="user-layout" style={styles.container}>
+        <Overlay
+          visible={this.props.loadingState.visible}
+          align="cc cc"
+          hasMask
+        >
+          <Loading shape="fusion-reactor">
+          </Loading>
+        </Overlay>
         <div className="header">
           <a href="#" className="meta">
             <img
@@ -26,6 +37,7 @@ export default class UserLayout extends Component {
         {this.props.children}
         <Footer />
       </Layout>
+
     );
   }
 }

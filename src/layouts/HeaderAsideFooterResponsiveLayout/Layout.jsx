@@ -19,12 +19,15 @@ import { bindActionCreators } from 'redux'
 import * as userActions from '@redux/actions/userActions'
 import cookie from 'react-cookies';
 import { permissionUtil, http } from '@utils';
+import { Overlay, Loading } from "@icedesign/base";
 
 // 设置默认的皮肤配置，支持 dark 和 light 两套皮肤配置
 const theme = typeof THEME === 'undefined' ? 'light' : THEME;
 @withRouter
 @connect(state => state, (dispatch) => {
-  return bindActionCreators(userActions, dispatch);
+  return {
+    userCreator: bindActionCreators(userActions, dispatch)
+  }
 })
 export default class HeaderAsideFooterResponsiveLayout extends Component {
   static propTypes = {};
@@ -40,12 +43,12 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
       this.props.history.push('/login');
     }
     //如果为空，加载权限
-    const permissions = this.props.userReducers.permissions;
+    const permissions = this.props.userState.permissions;
     if (Array.isArray(permissions) &&
       permissions.length == 0) {
       //请求权限，获取权限列表
       http.get('/permissions').then(response => {
-        this.props.initPermissions(response.data);
+        this.props.userCreator.initPermissions(response.data);
       });
     }
     const openKeys = this.getOpenKeys();
@@ -169,6 +172,14 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           }
         )}
       >
+        <Overlay
+          visible={this.props.loadingState.visible}
+          align="cc cc"
+          hasMask
+        >
+          <Loading shape="fusion-reactor">
+          </Loading>
+        </Overlay>
         <Header
           theme={theme}
           isMobile={this.state.isScreen !== 'isDesktop' ? true : undefined}
@@ -274,7 +285,9 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
             {/* 侧边菜单项 end */}
           </Layout.Aside>
           {/* 主体内容 */}
-          <Layout.Main>{this.props.children}</Layout.Main>
+          <Layout.Main>
+            {this.props.children}
+          </Layout.Main>
         </Layout.Section>
         <Footer />
       </Layout>

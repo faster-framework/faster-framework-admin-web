@@ -1,6 +1,6 @@
 import store from '@redux';
 export const hasPermission = (code) => {
-    const permissions = store.getState().userReducers.permissions;
+    const permissions = store.getState().userState.permissions;
     if (!Array.isArray(permissions) || permissions.length === 0) {
         return false;
     }
