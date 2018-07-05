@@ -39,6 +39,19 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
 
   constructor(props) {
     super(props);
+    this.asideMenuConfig = this.props.userState.menuList;
+    const openKeys = this.getOpenKeys();
+    this.state = {
+      collapse: false,
+      openDrawer: false,
+      isScreen: undefined,
+      openKeys
+    };
+    this.openKeysCache = openKeys;
+
+  }
+
+  componentDidMount() {
     //如果token为空，跳转到登录页面
     const token = cookie.load('token');
     if (token == null) {
@@ -54,19 +67,6 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         this.props.userCreator.initPermissions(response.data);
       });
     }
-    this.asideMenuConfig = this.props.userState.menuList;
-    const openKeys = this.getOpenKeys();
-    this.state = {
-      collapse: false,
-      openDrawer: false,
-      isScreen: undefined,
-      openKeys
-    };
-    this.openKeysCache = openKeys;
-
-  }
-
-  componentDidMount() {
     this.enquireScreenRegister();
   }
 

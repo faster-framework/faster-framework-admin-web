@@ -1,154 +1,146 @@
 import React, { Component } from 'react';
-import IceContainer from '@icedesign/container';
-import { Tab } from '@icedesign/base';
-import axios from 'axios';
-import CustomTable from './components/CustomTable';
-import EditDialog from './components/EditDialog';
-import DeleteBalloon from './components/DeleteBalloon';
+import { Table, Pagination, Balloon, Icon } from '@icedesign/base';
 
-const TabPane = Tab.TabPane;
+const getData = () => {
+  return Array.from({ length: 20 }).map((item, index) => {
+    return {
+      id: index + 1,
+      orderID: `12022123${index}`,
+      name: '张一峰',
+      date: `2018-06-${index + 1}`,
+      planDate: `2018-06-${index + 1}`,
+      validData: `2018-06-${index + 1}`,
+      category: '青霉素',
+      state: '已审核',
+      approver: '刘建明',
+      approvalData: `2018-06-${index + 1}`,
+    };
+  });
+};
 
-const tabs = [{ tab: '全部', key: 'all' }, { tab: '审核中', key: 'review' }];
-
-export default class TabTable extends Component {
-  static displayName = 'TabTable';
-
-  static propTypes = {};
-
-  static defaultProps = {};
+export default class Home extends Component {
+  static displayName = 'Home';
 
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: {},
-      tabKey: 'all',
+      current: 1,
+      dataSource: getData(),
     };
-    this.columns = [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-        key: 'id',
-        width: 50,
-      },
-      {
-        title: '用户名',
-        dataIndex: 'username',
-        key: 'username',
-        width: 100,
-      },
-      {
-        title: '邮箱',
-        dataIndex: 'email',
-        key: 'email',
-        width: 150,
-      },
-      {
-        title: '用户组',
-        dataIndex: 'group',
-        key: 'group',
-        width: 120,
-      },
-      {
-        title: '文章数',
-        dataIndex: 'articleNum',
-        key: 'articleNum',
-        width: 80,
-      },
-      {
-        title: '评论数',
-        dataIndex: 'commentNum',
-        key: 'commentNum',
-        width: 80,
-      },
-      {
-        title: '注册时间',
-        dataIndex: 'regTime',
-        key: 'regTime',
-        width: 150,
-      },
-      {
-        title: '最后登录时间',
-        dataIndex: 'LastLoginTime',
-        key: 'LastLoginTime',
-        width: 150,
-      },
-      {
-        title: '操作',
-        key: 'action',
-        width: 200,
-        render: (value, index, record) => {
-          return (
-            <span>
-              <EditDialog
-                index={index}
-                record={record}
-                getFormValues={this.getFormValues}
-              />
-              <DeleteBalloon
-                handleRemove={() => this.handleRemove(value, index, record)}
-              />
-            </span>
-          );
-        },
-      },
-    ];
   }
 
-  componentDidMount() {
-    axios
-      .get('/mock/user-list.json')
-      .then((response) => {
-        this.setState({
-          dataSource: response.data.data,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  handlePagination = (current) => {
+    this.setState({
+      current,
+    });
+  };
 
-  getFormValues = (dataIndex, values) => {
-    const { dataSource, tabKey } = this.state;
-    dataSource[tabKey][dataIndex] = values;
+  handleSort = (dataIndex, order) => {
+    const dataSource = this.state.dataSource.sort((a, b) => {
+      const result = a[dataIndex] - b[dataIndex];
+      if (order === 'asc') {
+        return result > 0 ? 1 : -1;
+      }
+      return result > 0 ? -1 : 1;
+    });
+
     this.setState({
       dataSource,
     });
   };
 
-  handleRemove = (value, index) => {
-    const { dataSource, tabKey } = this.state;
-    dataSource[tabKey].splice(index, 1);
-    this.setState({
-      dataSource,
-    });
+  renderCatrgory = (value) => {
+    return (
+      <Balloon
+        align="lt"
+        trigger={<div style={{ margin: '5px' }}>{value}</div>}
+        closable={false}
+        style={{ lineHeight: '24px' }}
+      >
+        青霉素是抗菌素的一种，是能破坏细菌的细胞壁并在细菌细胞的繁殖期起杀菌作用的一类抗生素
+      </Balloon>
+    );
   };
 
-  handleTabChange = (key) => {
-    this.setState({
-      tabKey: key,
-    });
+  renderState = (value) => {
+    return (
+      <div style={styles.state}>
+        <span style={styles.circle} />
+        <span style={styles.stateText}>{value}</span>
+      </div>
+    );
+  };
+
+  renderOper = () => {
+    return (
+      <div style={styles.oper}>
+        <Icon type="edit" size="small" style={styles.editIcon} />
+      </div>
+    );
   };
 
   render() {
     const { dataSource } = this.state;
     return (
-      <div className="tab-table">
-        <IceContainer style={{ padding: '0 20px 20px' }}>
-          <Tab onChange={this.handleTabChange}>
-            {tabs.map((item) => {
-              return (
-                <TabPane tab={item.tab} key={item.key}>
-                  <CustomTable
-                    dataSource={dataSource[this.state.tabKey]}
-                    columns={this.columns}
-                    hasBorder={false}
-                  />
-                </TabPane>
-              );
-            })}
-          </Tab>
-        </IceContainer>
+      <div style={styles.tableContainer}>
+        <Table
+          dataSource={dataSource}
+          onSort={this.handleSort}
+          hasBorder={false}
+          className="custom-table"
+        >
+          <Table.Column title="序列号" dataIndex="id" sortable align="center" />
+          <Table.Column title="调价单号" dataIndex="orderID" sortable />
+          <Table.Column title="调价人" dataIndex="name" />
+          <Table.Column title="调价日期" dataIndex="date" />
+          <Table.Column title="计划生效日期" dataIndex="planDate" />
+          <Table.Column title="实际生效日期" dataIndex="validData" />
+          <Table.Column
+            title="分类"
+            dataIndex="category"
+            cell={this.renderCatrgory}
+          />
+          <Table.Column
+            title="状态"
+            dataIndex="state"
+            cell={this.renderState}
+          />
+          <Table.Column title="审核人" dataIndex="approver" />
+          <Table.Column title="审核日期" dataIndex="approvalData" />
+          <Table.Column title="操作" cell={this.renderOper} />
+        </Table>
+        <Pagination
+          style={styles.pagination}
+          current={this.state.current}
+          onChange={this.handlePagination}
+        />
       </div>
     );
   }
 }
+
+const styles = {
+  tableContainer: {
+    background: '#fff',
+    paddingBottom: '10px',
+  },
+  pagination: {
+    margin: '20px 0',
+    textAlign: 'center',
+  },
+  editIcon: {
+    color: '#999',
+    cursor: 'pointer',
+  },
+  circle: {
+    display: 'inline-block',
+    background: '#28a745',
+    width: '8px',
+    height: '8px',
+    borderRadius: '50px',
+    marginRight: '4px',
+  },
+  stateText: {
+    color: '#28a745',
+  },
+};
