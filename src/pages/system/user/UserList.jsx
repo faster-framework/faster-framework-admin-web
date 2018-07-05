@@ -1,22 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Pagination, Balloon, Icon } from '@icedesign/base';
-
-const getData = () => {
-  return Array.from({ length: 20 }).map((item, index) => {
-    return {
-      id: index + 1,
-      orderID: `12022123${index}`,
-      name: '张一峰',
-      date: `2018-06-${index + 1}`,
-      planDate: `2018-06-${index + 1}`,
-      validData: `2018-06-${index + 1}`,
-      category: '青霉素',
-      state: '已审核',
-      approver: '刘建明',
-      approvalData: `2018-06-${index + 1}`,
-    };
-  });
-};
+import { http } from '@utils'
 
 export default class UserList extends Component {
   static displayName = 'UserList';
@@ -24,51 +8,43 @@ export default class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 1,
-      dataSource: getData(),
+      query: {
+        name: null,
+      },
+      pageParam: {
+        pageSize: 1,
+        pageNum: 1,
+        pages: 0,
+      },
+      list: []
     };
+  }
+  componentDidMount() {
+    this.loadData();
+  }
+
+  loadData = () => {
+    //获取用户列表数据
+    http.get('/sys/users', {
+      params: Object.assign({}, this.state.query, this.state.pageParam)
+    }).then(response => {
+      const resultData = response.data;
+      this.setState({
+        list: resultData.list,
+        pageParam: Object.assign({}, this.state.pageParam, {
+          pageNum: resultData.nextPage,
+          pages: resultData.pages
+        })
+      });
+      console.info(this.state);
+      console.info(this.state.pageParam.pages)
+    });
   }
 
   handlePagination = (current) => {
     this.setState({
       current,
     });
-  };
-
-  handleSort = (dataIndex, order) => {
-    const dataSource = this.state.dataSource.sort((a, b) => {
-      const result = a[dataIndex] - b[dataIndex];
-      if (order === 'asc') {
-        return result > 0 ? 1 : -1;
-      }
-      return result > 0 ? -1 : 1;
-    });
-
-    this.setState({
-      dataSource,
-    });
-  };
-
-  renderCatrgory = (value) => {
-    return (
-      <Balloon
-        align="lt"
-        trigger={<div style={{ margin: '5px' }}>{value}</div>}
-        closable={false}
-        style={{ lineHeight: '24px' }}
-      >
-        青霉素是抗菌素的一种，是能破坏细菌的细胞壁并在细菌细胞的繁殖期起杀菌作用的一类抗生素
-      </Balloon>
-    );
-  };
-
-  renderState = (value) => {
-    return (
-      <div style={styles.state}>
-        <span style={styles.circle} />
-        <span style={styles.stateText}>{value}</span>
-      </div>
-    );
   };
 
   renderOper = () => {
@@ -80,46 +56,27 @@ export default class UserList extends Component {
   };
 
   render() {
-    const { dataSource } = this.state;
     return (
       <div style={styles.tableContainer}>
         <Table
-          dataSource={dataSource}
-          onSort={this.handleSort}
+          dataSource={this.state.list}
           hasBorder={false}
-          className="custom-table"
         >
-          <Table.Column title="序列号" dataIndex="id" align="center" />
-          <Table.Column title="调价单号" dataIndex="orderID" />
-          <Table.Column title="调价人" dataIndex="name" />
-          <Table.Column title="调价日期" dataIndex="date" />
-          <Table.Column title="计划生效日期" dataIndex="planDate" />
-          <Table.Column title="实际生效日期" dataIndex="validData" />
-          <Table.Column
-            title="分类"
-            dataIndex="category"
-            cell={this.renderCatrgory}
-          />
-          <Table.Column
-            title="状态"
-            dataIndex="state"
-            cell={this.renderState}
-          />
-          <Table.Column title="审核人" dataIndex="approver" />
-          <Table.Column title="审核日期" dataIndex="approvalData" />
+          <Table.Column title="用户名" dataIndex="account" />
+          <Table.Column title="用户姓名" dataIndex="name" />
+          <Table.Column title="创建时间" dataIndex="createDate" />
           <Table.Column title="操作" cell={this.renderOper} />
         </Table>
-          <Pagination
-            pageSizeSelector="dropdown"
-            style={styles.pagination}
-            current={this.state.current}
-            onChange={this.handlePagination}
-          />
-        </div>
+        <Pagination
+          pageSizeSelector="dropdown"
+          total={this.state.pageParam.pages}
+          pageSize={this.state.pageParam.pageSize}
+          style={styles.pagination}
+        />
+      </div>
     );
   }
 }
-
 const styles = {
   tableContainer: {
     background: '#fff',
@@ -128,5 +85,4 @@ const styles = {
   pagination: {
     margin: '20px 10px 10px 10px',
   }
-
 };

@@ -45,9 +45,10 @@ export default class NavTab extends React.Component {
      * tab关闭
      */
     onTabClose = (key) => {
+        const activeKey = this.props.tabState.activeKey;
         //获取当前要删除的key的前一个下标，如果要删除的是当前展开的，则请求前一个
         this.props.tabState.tabs.forEach((item, i) => {
-            if (item.key == key) {
+            if (item.key == key && key == activeKey) {
                 this.props.history.replace(this.props.tabState.tabs[i - 1].key);
             }
         });
