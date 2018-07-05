@@ -35,13 +35,15 @@ const asideMenuConfig = [
     icon: 'yonghu',
     path: '/sys',
     children: [
-      { name: '用户管理', path: '/users/list', code: 'users:list' }
+      { name: '用户管理', path: '/users/list', code: 'users:list' },
+      { name: '角色管理', path: '/role/list', code: 'roles:list' },
     ],
   },
 ];
 
+const recursiveMenu = [];
 /**
- * 递归处理子类path，继承父类path
+ * 递归处理子类path，继承父类path，返回扁平列表
  */
 function recursiveMenuConfig(config = [], parent) {
   config.forEach((item) => {
@@ -51,7 +53,12 @@ function recursiveMenuConfig(config = [], parent) {
     if (Array.isArray(item.children)) {
       recursiveMenuConfig(item.children, item);
     }
+    const recuriveItem = {
+      name: item.name,
+      path: item.path,
+    }
+    recursiveMenu.push(recuriveItem);
   });
 }
 recursiveMenuConfig(asideMenuConfig, null);
-export { headerMenuConfig, asideMenuConfig };
+export { headerMenuConfig, asideMenuConfig, recursiveMenu };

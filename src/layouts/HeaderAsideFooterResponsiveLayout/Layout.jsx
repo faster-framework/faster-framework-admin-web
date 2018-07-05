@@ -16,9 +16,11 @@ import './scss/dark.scss';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as userActions from '@redux/actions/userActions'
+import * as tabActions from '@redux/actions/tabActions'
 import cookie from 'react-cookies';
 import { permissionUtil, http } from '@utils';
 import { Overlay, Loading, Tab } from "@icedesign/base";
+import { recursiveMenu } from "@/menuConfig";
 
 // 设置默认的皮肤配置，支持 dark 和 light 两套皮肤配置
 const theme = typeof THEME === 'undefined' ? 'light' : THEME;
@@ -26,7 +28,8 @@ const TabPane = Tab.TabPane;
 @withRouter
 @connect(state => state, (dispatch) => {
   return {
-    userCreator: bindActionCreators(userActions, dispatch)
+    userCreator: bindActionCreators(userActions, dispatch),
+    tabCreator: bindActionCreators(tabActions, dispatch)
   }
 })
 export default class HeaderAsideFooterResponsiveLayout extends Component {
@@ -37,7 +40,6 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
 
   constructor(props) {
     super(props);
-    this.asideMenuConfig = this.props.userState.menuList;
     //如果token为空，跳转到登录页面
     const token = cookie.load('token');
     if (token == null) {
@@ -53,14 +55,16 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         this.props.userCreator.initPermissions(response.data);
       });
     }
+    this.asideMenuConfig = this.props.userState.menuList;
     const openKeys = this.getOpenKeys();
     this.state = {
       collapse: false,
       openDrawer: false,
       isScreen: undefined,
-      openKeys,
+      openKeys
     };
     this.openKeysCache = openKeys;
+    this.initTabs();
   }
 
   componentDidMount() {
@@ -144,11 +148,43 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     const menuItemProp = args.item.props;
     const menuName = menuItemProp.name;
     const path = menuItemProp.eventKey;
-    console.info(menuName)
-    console.info(path)
-    console.info("点击了！！！！")
+
+    //这里之所以不添加内容，是因为当前获取的内容还为当前页的，所以这里在跳转以后获取内容
+    this.props.tabCreator.add({ tab: menuName, key: path });
   };
 
+  /**
+   * Tab点击
+   */
+  onTabClick = (args) => {
+    this.props.history.replace(args);
+  };
+  onTabClose = (key) => {
+    //获取当前要删除的key的前一个下标，如果要删除的是当前展开的，则请求前一个
+    this.props.tabState.tabs.forEach((item, i) => {
+      if (item.key == key) {
+        this.props.history.push(this.props.tabState.tabs[i - 1].key);
+      }
+    });
+    this.props.tabCreator.remove(key);
+  }
+  /**
+   * 初始化导航tab
+   */
+  initTabs = () => {
+    const { location } = this.props;
+    const { pathname } = location;
+    if (Array.isArray(recursiveMenu) && recursiveMenu.length > 0) {
+      const firstMenu = recursiveMenu[0];
+      this.props.tabCreator.add({ tab: firstMenu.name, key: firstMenu.path, closeable: false });
+      // //获取扁平化以后的路径
+      recursiveMenu.forEach(item => {
+        if (pathname === item.path) {
+          this.props.tabCreator.add({ tab: item.name, key: item.path, content: this.props.children });
+        }
+      })
+    }
+  }
   /**
    * 获取当前展开的菜单项
    */
@@ -182,9 +218,9 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         <Overlay
           visible={this.props.loadingState.visible}
           align="cc cc"
-          hasMask
+          hasMask={this.props.loadingState.visible}
         >
-          <Loading shape="fusion-reactor">
+          <Loading visible={this.props.loadingState.visible} shape="fusion-reactor">
           </Loading>
         </Overlay>
         <Header
@@ -258,7 +294,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                           }
                           return (
                             <MenuItem key={item.path} name={item.name}>
-                              <Link {...linkProps}>{item.name}</Link>
+                              <Link {...linkProps} replace>{item.name}</Link>
                             </MenuItem>
                           );
                         })}
@@ -276,7 +312,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
                   }
                   return (
                     <MenuItem key={nav.path} name={nav.name}>
-                      <Link {...linkProps}>
+                      <Link {...linkProps} replace>
                         <span>
                           {nav.icon ? (
                             <FoundationSymbol size="small" type={nav.icon} />
@@ -296,19 +332,15 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           <Layout.Main>
             <Tab
               type="wrapped"
-              activeKey='1'
+              animation={false}
               closeable
-              className="custom-tab"
+              defaultActiveKey={this.props.tabState.activeKey}
+              onClose={this.onTabClose}
             >
               {
-                [
-                  { tab: "邮件", key: 1, closeable: true },
-                  { tab: "消息通知", key: 2 },
-                  { tab: "设置", key: 3 },
-                  { tab: "未读邮件", key: 4 }
-                ].map(item => (
-                  <TabPane tab={item.tab} key={item.key} closeable={item.closeable}>
-                    {this.props.children}
+                this.props.tabState.tabs.map(item => (
+                  <TabPane onClick={this.onTabClick} tab={item.tab} key={item.key} closeable={item.closeable}>
+                    {item.content}
                   </TabPane>
                 ))
               }
@@ -317,7 +349,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           </Layout.Main>
         </Layout.Section>
         <Footer />
-      </Layout>
+      </Layout >
     );
   }
 }

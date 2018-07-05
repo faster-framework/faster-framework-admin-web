@@ -2,11 +2,9 @@
  * 定义应用路
  */
 import { HashRouter as Router } from 'react-router-dom';
-import { Switch, Route } from 'react-router';
+import { Switch, Route, hashHistory } from 'react-router';
 import React from 'react';
-
 import routerConfig from './routerConfig';
-
 /**
  * 将路由信息扁平化，继承上一级路由的 path
  * @param {Array} config 路由配置
