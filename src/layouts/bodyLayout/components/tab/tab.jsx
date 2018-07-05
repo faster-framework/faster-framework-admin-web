@@ -1,77 +1,75 @@
 import { Tab, Button, Icon } from "@icedesign/base";
-
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as tabActions from '@redux/actions/tabActions';
+import { recursiveMenu } from "@/menuConfig";
 const TabPane = Tab.TabPane;
 
-const panes = [
-    { tab: "邮件", key: 1, closeable: false },
-    { tab: "消息通知", key: 2 },
-    { tab: "设置", key: 3 },
-    { tab: "未读邮件", key: 4 }
-];
-
-export default class CloseableTab extends React.Component {
+@withRouter
+@connect(state => state, (dispatch) => {
+    return {
+        tabCreator: bindActionCreators(tabActions, dispatch)
+    }
+})
+export default class NavTab extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            panes: panes,
-            activeKey: panes[0].key
-        };
+        this.initTabs();
     }
 
-    /*eslint-disable eqeqeq */
-    remove(targetKey) {
-        let activeKey = this.state.activeKey;
-        let lastIndex;
-        this.state.panes.forEach((item, i) => {
-            if (item.key == targetKey) {
-                lastIndex = i - 1;
+    /**
+     * 初始化
+     */
+    initTabs = () => {
+        const { location } = this.props;
+        const { pathname } = location;
+        if (Array.isArray(recursiveMenu) && recursiveMenu.length > 0) {
+            const firstMenu = recursiveMenu[0];
+            this.props.tabCreator.add({ tab: firstMenu.name, key: firstMenu.path, closeable: false });
+            // //获取扁平化以后的路径
+            recursiveMenu.forEach(item => {
+                if (pathname === item.path) {
+                    this.props.tabCreator.add({ tab: item.name, key: item.path, content: this.props.children });
+                }
+            })
+        }
+    }
+    /**
+   * Tab点击
+   */
+    onTabClick = (args) => {
+        this.props.history.replace(args);
+    };
+    /**
+     * tab关闭
+     */
+    onTabClose = (key) => {
+        //获取当前要删除的key的前一个下标，如果要删除的是当前展开的，则请求前一个
+        this.props.tabState.tabs.forEach((item, i) => {
+            if (item.key == key) {
+                this.props.history.replace(this.props.tabState.tabs[i - 1].key);
             }
         });
-        const panes = this.state.panes.filter(pane => pane.key != targetKey);
-        if (lastIndex >= 0 && activeKey == targetKey) {
-            activeKey = panes[lastIndex].key;
-        }
-        this.setState({ panes, activeKey });
+        this.props.tabCreator.remove(key);
     }
-
-    onClose(targetKey) {
-        this.remove(targetKey);
-    }
-
-    onChange(activeKey) {
-        console.info(activeKey)
-        this.setState({ activeKey });
-    }
-
-    addTabpane() {
-        this.setState(prevState => {
-            const { panes } = prevState;
-            panes.push({ tab: "new tab", key: Math.random() });
-            return { panes };
-        });
-    }
-
     render() {
-        const state = this.state;
         return (
-            <div>
-                <Tab
-                    type="wrapped"
-                    activeKey={state.activeKey}
-                    closeable
-                    onChange={this.onChange}
-                    onClose={this.onClose}
-                    className="custom-tab"
-                >
-                    {
-                        state.panes.map(item => (
-                            <TabPane tab={item.tab} key={item.key} closeable={item.closeable}>
-                                {item.tab}的内容区域
-            </TabPane>
-                        ))
-                    }
-                </Tab>
-            </div >
+            <Tab
+                type="wrapped"
+                animation={false}
+                closeable
+                defaultActiveKey={this.props.tabState.activeKey}
+                onClose={this.onTabClose}
+            >
+                {
+                    this.props.tabState.tabs.map(item => (
+                        <TabPane onClick={this.onTabClick} tab={item.tab} key={item.key} closeable={item.closeable}>
+                            {item.content}
+                        </TabPane>
+                    ))
+                }
+            </Tab>
         );
     }
 }

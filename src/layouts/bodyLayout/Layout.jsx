@@ -19,12 +19,11 @@ import * as userActions from '@redux/actions/userActions'
 import * as tabActions from '@redux/actions/tabActions'
 import cookie from 'react-cookies';
 import { permissionUtil, http } from '@utils';
-import { Overlay, Loading, Tab } from "@icedesign/base";
-import { recursiveMenu } from "@/menuConfig";
+import { Overlay, Loading } from "@icedesign/base";
+import Tab from './components/tab';
 
 // 设置默认的皮肤配置，支持 dark 和 light 两套皮肤配置
 const theme = typeof THEME === 'undefined' ? 'light' : THEME;
-const TabPane = Tab.TabPane;
 @withRouter
 @connect(state => state, (dispatch) => {
   return {
@@ -64,7 +63,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
       openKeys
     };
     this.openKeysCache = openKeys;
-    this.initTabs();
+
   }
 
   componentDidMount() {
@@ -153,38 +152,6 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     this.props.tabCreator.add({ tab: menuName, key: path });
   };
 
-  /**
-   * Tab点击
-   */
-  onTabClick = (args) => {
-    this.props.history.replace(args);
-  };
-  onTabClose = (key) => {
-    //获取当前要删除的key的前一个下标，如果要删除的是当前展开的，则请求前一个
-    this.props.tabState.tabs.forEach((item, i) => {
-      if (item.key == key) {
-        this.props.history.replace(this.props.tabState.tabs[i - 1].key);
-      }
-    });
-    this.props.tabCreator.remove(key);
-  }
-  /**
-   * 初始化导航tab
-   */
-  initTabs = () => {
-    const { location } = this.props;
-    const { pathname } = location;
-    if (Array.isArray(recursiveMenu) && recursiveMenu.length > 0) {
-      const firstMenu = recursiveMenu[0];
-      this.props.tabCreator.add({ tab: firstMenu.name, key: firstMenu.path, closeable: false });
-      // //获取扁平化以后的路径
-      recursiveMenu.forEach(item => {
-        if (pathname === item.path) {
-          this.props.tabCreator.add({ tab: item.name, key: item.path, content: this.props.children });
-        }
-      })
-    }
-  }
   /**
    * 获取当前展开的菜单项
    */
@@ -330,22 +297,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           </Layout.Aside>
           {/* 主体内容 */}
           <Layout.Main>
-            <Tab
-              type="wrapped"
-              animation={false}
-              closeable
-              defaultActiveKey={this.props.tabState.activeKey}
-              onClose={this.onTabClose}
-            >
-              {
-                this.props.tabState.tabs.map(item => (
-                  <TabPane onClick={this.onTabClick} tab={item.tab} key={item.key} closeable={item.closeable}>
-                    {item.content}
-                  </TabPane>
-                ))
-              }
-            </Tab>
-
+            <Tab children={this.props.children}></Tab>
           </Layout.Main>
         </Layout.Section>
         <Footer />
