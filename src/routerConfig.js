@@ -2,8 +2,8 @@
 // 你可以调整 routerConfig 里的内容
 // 变量名 routerConfig 为 iceworks 检测关键字，请不要修改名称
 
-import HeaderAsideFooterResponsiveLayout from './layouts/HeaderAsideFooterResponsiveLayout';
-import LoginLayout from './layouts/LoginLayout';
+import BlankLayout from './layouts/blankLayout';
+import LoginLayout from '@pages/login/layout';
 import Dashboard from './pages/dashborad';
 import UserList from './pages/system/user';
 import NotFound from './pages/notFound';
@@ -18,35 +18,31 @@ const routerConfig = [
   },
   {
     path: '/',
-    layout: HeaderAsideFooterResponsiveLayout,
     component: Dashboard,
   },
   {
     path: '/sys/users',
-    layout: HeaderAsideFooterResponsiveLayout,
     component: UserList,
     children: [
       {
         path: 'list',
-        layout: HeaderAsideFooterResponsiveLayout,
         component: UserList,
       },
     ],
   },
   {
     path: '/sys/role',
-    layout: HeaderAsideFooterResponsiveLayout,
     component: RoleList,
     children: [
       {
         path: 'list',
-        layout: HeaderAsideFooterResponsiveLayout,
         component: RoleList,
       },
     ],
   },
   {
     path: '*',
+    layout: BlankLayout,
     component: NotFound,
   },
 ];

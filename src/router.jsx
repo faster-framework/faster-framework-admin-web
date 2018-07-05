@@ -2,6 +2,7 @@
  * 定义应用路
  */
 import { HashRouter as Router } from 'react-router-dom';
+import BodyLayout from './layouts/bodyLayout';
 import { Switch, Route, hashHistory } from 'react-router';
 import React from 'react';
 import routerConfig from './routerConfig';
@@ -14,7 +15,7 @@ function recursiveRouterConfigV4(config = []) {
   config.forEach((item) => {
     const route = {
       path: item.path,
-      layout: item.layout,
+      layout: item.layout ? item.layout : BodyLayout,
       component: item.component,
     };
     if (Array.isArray(item.children)) {

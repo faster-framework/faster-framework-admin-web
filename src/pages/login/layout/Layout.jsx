@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Layout from '@icedesign/layout';
-import Footer from './components/Footer';
-import './LoginLayout.scss';
+import './Layout.scss';
 import { Overlay, Loading } from "@icedesign/base";
 import { connect } from 'react-redux'
 
@@ -35,7 +34,6 @@ export default class UserLayout extends Component {
           <p className="desc">飞冰让前端开发简单而友好</p>
         </div>
         {this.props.children}
-        <Footer />
       </Layout>
 
     );
