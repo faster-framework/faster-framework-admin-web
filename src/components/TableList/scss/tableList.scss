@@ -7,3 +7,15 @@
 .pagination{
     margin: 20px 10px 10px 10px;
 }
+
+.filters {
+    div{
+        display: flex !important;
+        align-items: center !important;
+        margin-bottom: 20px !important;
+        span {
+            line-height: 28px !important;
+            padding-right: 10px !important;
+          }
+      }
+}

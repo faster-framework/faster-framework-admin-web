@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Grid } from '@icedesign/base';
+import { Table, Pagination, Grid, Button, Icon } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
 import { http } from '@utils'
-import Filter from './Filter'
+import { FormBinderWrapper } from '@icedesign/form-binder';
 const { Row } = Grid;
 import './scss/tableList.scss';
 export default class UserList extends Component {
@@ -22,11 +22,10 @@ export default class UserList extends Component {
             filters = this.props.children.find(item => item.key === 'filters').props.children;
         }
         this.state = {
-            query: {
-                name: null,
+            queryParam: {
             },
             pageParam: {
-                pageSize: 1,
+                pageSize: 10,
                 pageNum: 1,
                 pages: 0,
             },
@@ -45,11 +44,14 @@ export default class UserList extends Component {
      */
     loadData = (pageNum = this.state.pageParam.pageNum, pageSize = this.state.pageParam.pageSize) => {
         const pageReq = { pageNum: pageNum, pageSize: pageSize };
-        this.setState({ pageParam: Object.assign({}, this.state.pageParam, pageReq) });
+        this.setState(
+            {
+                pageParam: Object.assign({}, this.state.pageParam, pageReq),
+            }
+        );
         //获取用户列表数据
-
         http.get(this.state.api, {
-            params: Object.assign({}, this.state.query, pageReq)
+            params: Object.assign({}, this.state.queryParam, pageReq)
         }).then(response => {
             const resultData = response.data;
             this.setState({
@@ -69,12 +71,33 @@ export default class UserList extends Component {
     onPageSizeChange = (pageSize) => {
         this.loadData(1, pageSize);
     }
+    onQuery = () => {
+        this.loadData();
+    }
+    //todo reset
+    onQueryRest = () => {
+        this.loadData();
+    }
 
     render() {
         return (
 
             <div>
-                <Filter />
+                <IceContainer title="搜索">
+                    <FormBinderWrapper value={this.state.queryParam}>
+                        <Row wrap className="filters">
+                            {this.state.filters}
+                        </Row>
+                    </FormBinderWrapper>
+                    {
+                        this.state.filters.length > 0 && (
+                            <Button type="primary" onClick={this.onQuery}>
+                                <Icon type="search" size="xs" />查询
+                             </Button>
+                        )
+                    }
+
+                </IceContainer>
                 <IceContainer title={this.state.title}>
                     <Row wrap className="operation">
                         {this.state.operations}
@@ -94,7 +117,7 @@ export default class UserList extends Component {
                         onPageSizeChange={this.onPageSizeChange}
                     />
                 </IceContainer>
-            </div>
+            </div >
 
         );
     }
