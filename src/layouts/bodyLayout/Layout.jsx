@@ -182,6 +182,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           }
         )}
       >
+
         <Overlay
           visible={this.props.loadingState.visible}
           align="cc cc"
@@ -297,7 +298,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
           </Layout.Aside>
           {/* 主体内容 */}
           <Layout.Main>
-            <Tab children={this.props.children}></Tab>
+            <Tab>{this.props.children}</Tab>
           </Layout.Main>
         </Layout.Section>
         <Footer />
