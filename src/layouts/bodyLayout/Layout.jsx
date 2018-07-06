@@ -48,10 +48,14 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
       openKeys
     };
     this.openKeysCache = openKeys;
-
+    this.init();
   }
 
   componentDidMount() {
+
+    this.enquireScreenRegister();
+  }
+  init = () => {
     //如果token为空，跳转到登录页面
     const token = cookie.load('token');
     if (token == null) {
@@ -67,9 +71,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
         this.props.userCreator.initPermissions(response.data);
       });
     }
-    this.enquireScreenRegister();
   }
-
   /**
    * 注册监听屏幕的变化，可根据不同分辨率做对应的处理
    */

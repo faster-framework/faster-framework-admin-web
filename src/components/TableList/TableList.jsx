@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Icon } from '@icedesign/base';
+import { Table, Pagination, Grid } from '@icedesign/base';
+import IceContainer from '@icedesign/container';
 import { http } from '@utils'
-
+import Filter from './Filter'
+const { Row } = Grid;
+import './scss/tableList.scss';
 export default class UserList extends Component {
     static displayName = 'UserList';
 
     constructor(props) {
         super(props);
+        let columns, operations, filters;
+        //如果只存在一个节点
+        if (this.props.children.length == 1 && this.props.children.key === 'columns') {
+            columns = this.props.children.props.children;
+        }
+        //如果存在多个节点
+        if (this.props.children.length > 1) {
+            columns = this.props.children.find(item => item.key === 'columns').props.children;
+            operations = this.props.children.find(item => item.key === 'operations').props.children;
+            filters = this.props.children.find(item => item.key === 'filters').props.children;
+        }
         this.state = {
             query: {
                 name: null,
@@ -17,19 +31,23 @@ export default class UserList extends Component {
                 pages: 0,
             },
             list: [],
-            columns: null,
-            api: this.props.api
+            columns: columns,
+            filters: filters,
+            operations: operations,
+            api: this.props.api,
+            title: this.props.title
         };
-    }
-    componentDidMount() {
         this.loadData();
-        console.info(this.props.children);
     }
-
+    /**
+     * 加载数据
+     * 
+     */
     loadData = (pageNum = this.state.pageParam.pageNum, pageSize = this.state.pageParam.pageSize) => {
         const pageReq = { pageNum: pageNum, pageSize: pageSize };
         this.setState({ pageParam: Object.assign({}, this.state.pageParam, pageReq) });
         //获取用户列表数据
+
         http.get(this.state.api, {
             params: Object.assign({}, this.state.query, pageReq)
         }).then(response => {
@@ -40,7 +58,7 @@ export default class UserList extends Component {
                     pages: resultData.pages
                 })
             });
-        });
+        })
     }
 
 
@@ -54,31 +72,30 @@ export default class UserList extends Component {
 
     render() {
         return (
-            <div style={styles.tableContainer}>
-                <Table
-                    dataSource={this.state.list}
-                    hasBorder={false}
-                >
-                    {/* {this.props.children} */}
-                </Table>
-                <Pagination
-                    pageSizeSelector="dropdown"
-                    total={this.state.pageParam.pages}
-                    pageSize={this.state.pageParam.pageSize}
-                    style={styles.pagination}
-                    onChange={this.onPageNumChange}
-                    onPageSizeChange={this.onPageSizeChange}
-                />
+
+            <div>
+                <Filter />
+                <IceContainer title={this.state.title}>
+                    <Row wrap className="operation">
+                        {this.state.operations}
+                    </Row>
+                    <Table
+                        dataSource={this.state.list}
+                        hasBorder={false}
+                    >
+                        {this.state.columns}
+                    </Table>
+                    <Pagination
+                        className="pagination"
+                        pageSizeSelector="dropdown"
+                        total={this.state.pageParam.pages}
+                        pageSize={this.state.pageParam.pageSize}
+                        onChange={this.onPageNumChange}
+                        onPageSizeChange={this.onPageSizeChange}
+                    />
+                </IceContainer>
             </div>
+
         );
     }
 }
-const styles = {
-    tableContainer: {
-        background: '#fff',
-        paddingBottom: '10px',
-    },
-    pagination: {
-        margin: '20px 10px 10px 10px',
-    }
-};
