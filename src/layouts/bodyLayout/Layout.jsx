@@ -52,7 +52,6 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
   }
 
   componentDidMount() {
-
     this.enquireScreenRegister();
   }
   init = () => {

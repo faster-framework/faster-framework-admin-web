@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Icon, Grid, Button, Select, Input } from '@icedesign/base';
+import { Table, Icon, Grid, Button, Input } from '@icedesign/base';
 import TableList from '@components/TableList';
 import { FormBinder } from '@icedesign/form-binder';
 const { Col } = Grid;
@@ -8,16 +8,19 @@ export default class UserList extends Component {
 
   constructor(props) {
     super(props);
+    // 默认筛选参数，key与下方筛选条件内的name相对应
+    this.defaultFilterParam = {
+    }
   }
   render() {
     return (
-      <TableList api='/sys/users' title="用户列表">
+      <TableList api='/sys/users' title="用户列表" defaultFilterParam={this.defaultFilterParam}>
         {/* 筛选开始 */}
         <div key="filters">
           <Col xxs="24" l="8">
             <span>账号:</span>
             <FormBinder name="account">
-              <Input />
+              <Input/>
             </FormBinder>
           </Col>
           <Col xxs="24" l="8">

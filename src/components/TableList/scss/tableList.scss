@@ -1,6 +1,6 @@
 .operation{
     margin-bottom: 10px;
-    Button{
+    Button:not(:first-child){
         margin-left: 10px;
     }
 }
