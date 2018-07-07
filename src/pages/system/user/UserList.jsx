@@ -49,7 +49,7 @@ export default class UserList extends Component {
         {/* 操作结束 */}
 
         {/* 列表开始 */}
-        <div key="columns">
+        <div key="tables">
           <Table.Column title="账号" dataIndex="account" />
           <Table.Column title="姓名" dataIndex="name" />
           <Table.Column title="创建时间" dataIndex="createDate" />

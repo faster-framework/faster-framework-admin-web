@@ -10,20 +10,33 @@ export default class TableList extends Component {
 
     constructor(props) {
         super(props);
-        let columns, operations, filters;
+        let tableProps, tables, operationProps, operations, filterProps, filters;
         if (this.props.children) {
             //如果只存在一个节点
             if (Array.isArray(this.props.children)) {
-                const columsFind = this.props.children.find(item => item.key === 'columns');
-                columns = columsFind ? columsFind.props.children : columsFind;
-                const operationsFind = this.props.children.find(item => item.key === 'operations');
-                operations = operationsFind ? operationsFind.props.children : operationsFind;
-                const filtersFind = this.props.children.find(item => item.key === 'filters');
-                filters = filtersFind ? filtersFind.props.children : filtersFind;
+                let tableFind = this.props.children.find(item => item.key === 'tables');
+                tableProps = tableFind ? tableFind.props : tableFind;
+                tables = tableProps ? tableProps.children : tableProps;
+                let operationFind = this.props.children.find(item => item.key === 'operations');
+                operationProps = operationFind ? operationFind.props : operationFind;
+                operations = operationProps ? operationProps.children : operationProps;
+                let filterFind = this.props.children.find(item => item.key === 'filters');
+                filterProps = filterFind ? filterFind.props : filterFind;
+                filters = filterProps ? filterProps.children : filterProps;
             } else {
-                console.info(this.props.children)
-                columns = this.props.children.props.children;
+                tableProps = this.props.children;
+                tables = this.props.children.props.children;
             }
+        }
+        const defaultSelection = {
+            mode: 'single',
+            selectedRowKeys: [],
+            onSelectAll: this.onSelectAll,
+            onSelect: this.onSelect
+        }
+        if (tableProps) {
+            const rowSelection = Object.assign({}, defaultSelection, tableProps.rowSelection);
+            tableProps = Object.assign({}, tableProps, { rowSelection: rowSelection })
         }
         this.state = {
             filterParam: this.props.defaultFilterParam,
@@ -33,16 +46,86 @@ export default class TableList extends Component {
                 pages: 0,
             },
             list: [],
-            columns: columns,
+            selectRecords: [],
+            tableProps: tableProps,
+            operationProps: operationProps,
+            filterProps: filterProps,
+            tables: tables,
             filters: filters,
             operations: operations,
             api: this.props.api,
-            title: this.props.title
-        };
+            title: this.props.title,
 
+        };
         this.loadData();
     }
-
+    /**
+     * 刷新表格
+     */
+    refresh = () => {
+        this.loadData(1);
+    }
+    /**
+     * 获取当前选择的行
+     * 如果为单选，返回对象
+     * 如果多多选，返回数组
+     */
+    getSelectRecords = () => {
+        if (this.state.tableProps.rowSelection.mode === 'single') {
+            return this.state.selectRecords.length > 1 ? this.state.selectRecords : this.state.selectRecords[0];
+        } else {
+            return this.state.selectRecords;
+        }
+    }
+    /**
+     * 改变选中的值
+     */
+    changeSelect = (keys, records) => {
+        const rowSelectionProps = this.state.tableProps.rowSelection;
+        this.setState({
+            tableProps: Object.assign({}, this.state.tableProps, { rowSelection: Object.assign({}, rowSelectionProps, { selectedRowKeys: keys }) }),
+            selectRecords: records
+        });
+    }
+    /**
+     * 点击左上角复选框选择全部
+     */
+    onSelectAll = (selected, records) => {
+        this.changeSelect(records.map(item => item.id), records);
+    }
+    /**
+     * 点击
+     */
+    onSelect = (selected, record, records) => {
+        this.changeSelect(records.map(item => item.id), records);
+    }
+    /**
+     * 当行点击时
+     */
+    onRowClick = (record, index, e) => {
+        const rowSelectionProps = this.state.tableProps.rowSelection;
+        let keys = rowSelectionProps.selectedRowKeys;
+        let recrods = this.state.selectRecords;
+        const existKeyIndex = keys.indexOf(record.id);
+        if (rowSelectionProps.mode === 'single') {
+            //先清空的，然后加入现在的
+            keys = [];
+            keys.push(record.id);
+            recrods = [];
+            recrods.push(record);
+        } else { //如果是多选
+            //如果相同，删除当前的
+            if (existKeyIndex > -1 && keys[existKeyIndex] === record.id) {
+                keys.splice(existKeyIndex, 1);
+                recrods.splice(existKeyIndex, 1);
+            } else {
+                //如果不相同，加入
+                keys.push(record.id);
+                recrods.push(record);
+            }
+        }
+        this.changeSelect(keys, recrods);
+    }
     /**
      * 加载数据
      * 
@@ -57,13 +140,15 @@ export default class TableList extends Component {
             this.setState({
                 list: resultData.list,
                 pageParam: Object.assign({}, this.state.pageParam, {
-                    pages: resultData.pages
+                    pages: Number(resultData.pages)
                 })
             });
         })
     }
 
-
+    /**
+     * 当页码改变时
+     */
     onPageNumChange = (pageNum) => {
         this.setState(
             {
@@ -72,7 +157,9 @@ export default class TableList extends Component {
         );
         this.loadData(pageNum);
     }
-
+    /**
+     * 当每页数量改变时
+     */
     onPageSizeChange = (pageSize) => {
         this.setState(
             {
@@ -81,6 +168,10 @@ export default class TableList extends Component {
         );
         this.loadData(1, pageSize);
     }
+
+    /**
+     * 查询时
+     */
     onQuery = () => {
         this.refs.form.validateAll((errors) => {
             if (errors) {
@@ -121,12 +212,15 @@ export default class TableList extends Component {
                     <Table
                         dataSource={this.state.list}
                         hasBorder={false}
+                        onRowClick={this.onRowClick}
+                        {...this.state.tableProps}
                     >
-                        {this.state.columns}
+                        {this.state.tables}
                     </Table>
                     <Pagination
                         className="pagination"
                         pageSizeSelector="dropdown"
+                        pageSizeList={[10, 20, 50]}
                         total={this.state.pageParam.pages}
                         pageSize={this.state.pageParam.pageSize}
                         onChange={this.onPageNumChange}
