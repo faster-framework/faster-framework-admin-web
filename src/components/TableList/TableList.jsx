@@ -191,7 +191,7 @@ export default class TableList extends Component {
                     this.state.filters && (
                         <IceContainer title="搜索">
                             <FormBinderWrapper value={this.state.filterParam} ref="form">
-                                <Row wrap className="filters">
+                                <Row wrap className="form">
                                     {this.state.filters}
                                 </Row>
                             </FormBinderWrapper>

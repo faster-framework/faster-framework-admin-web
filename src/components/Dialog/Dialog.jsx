@@ -34,7 +34,7 @@ export default class BaseDialog extends Component {
         visible={this.state.visible}
       >
         {this.props.children}
-      </Dialog>
+      </Dialog >
     );
   }
 }

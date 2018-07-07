@@ -85,21 +85,10 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
   };
 
   enquireScreenHandle = (type) => {
-    let collapse;
-    if (type === 'isMobile') {
-      collapse = false;
-    } else if (type === 'isTablet') {
-      collapse = true;
-    } else {
-      collapse = this.state.collapse;
-    }
-
     const handler = {
       match: () => {
         this.setState({
           isScreen: type,
-          openDrawer: true,
-          collapse,
         });
       },
       unmatch: () => {

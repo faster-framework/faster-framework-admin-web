@@ -3,7 +3,7 @@ import { Table, Icon, Grid, Button, Input, Feedback } from '@icedesign/base';
 import TableList from '@components/TableList';
 import { FormBinder } from '@icedesign/form-binder';
 import Dialog from '@components/Dialog';
-import UserList from '../user';
+import RoleAdd from './RoleAdd';
 import { http } from '@utils';
 import Permission from '@components/Permission';
 const { Col } = Grid;
@@ -104,14 +104,15 @@ export default class RoleList extends Component {
           ref="addDialog"
           onOk={this.onOk}
         >
-          <UserList></UserList>
+          <RoleAdd></RoleAdd>
         </Dialog>
         <Dialog
           title="编辑角色"
           ref="editDialog"
           onOk={this.onOk}
+          style={{width:'80%'}}
         >
-          <UserList></UserList>
+          <RoleAdd></RoleAdd>
         </Dialog>
         <Dialog
           title="删除角色"
