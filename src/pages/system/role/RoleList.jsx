@@ -37,7 +37,6 @@ export default class RoleList extends Component {
       this.refs.deleteDialog.hide();
       this.refs.tableList.refresh();
     });
-    ;
   }
   /**
    * 删除对话框弹出
@@ -99,17 +98,19 @@ export default class RoleList extends Component {
         {/* 表格结束 */}
 
         {/* 弹框开始 */}
+        
         <Dialog
           title="添加角色"
           ref="addDialog"
-          onOk={this.onOk}
+          footer={false}
+          style={{width:'60%'}}
         >
           <RoleAdd></RoleAdd>
         </Dialog>
         <Dialog
           title="编辑角色"
           ref="editDialog"
-          onOk={this.onOk}
+          footer={false}
           style={{width:'80%'}}
         >
           <RoleAdd></RoleAdd>

@@ -7,6 +7,8 @@ export default class BaseDialog extends Component {
   constructor(props) {
     super(props);
     this.state = this.props;
+    const style = Object.assign({}, this.state.style, { minWidth: '320px' });
+    this.state = Object.assign({}, this.state, { style: style });
   }
 
   hide = () => {
@@ -22,6 +24,7 @@ export default class BaseDialog extends Component {
   }
 
   render() {
+
     return (
       <Dialog
         footerAlign="center"
@@ -30,7 +33,7 @@ export default class BaseDialog extends Component {
         onCancel={this.hide}
         onClose={this.hide}
         locale={{ ok: '保存', cancel: '取消' }}
-        {...this.props}
+        {...this.state}
         visible={this.state.visible}
       >
         {this.props.children}
