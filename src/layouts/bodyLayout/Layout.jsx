@@ -60,6 +60,7 @@ export default class HeaderAsideFooterResponsiveLayout extends Component {
     if (token == null) {
       //跳转到登录页面
       this.props.history.push('/login');
+      return;
     }
     //如果为空，加载权限
     const permissions = this.props.userState.permissions;
