@@ -40,7 +40,7 @@ export default class RoleAdd extends Component {
         return (
             <div>
                 <FormBinderWrapper value={this.state.values} ref="postForm">
-                    <Form>
+                    <Form labelAlign="left">
                         <FormItem {...formItemLayout} label="角色名称：">
                             <FormBinder name="name" required message="请填写角色名称">
                                 <Input placeholder="请输入角色名称" />
@@ -48,7 +48,7 @@ export default class RoleAdd extends Component {
                             <FormError name="name" />
                         </FormItem>
 
-                        {/* <FormItem>
+                        <FormItem>
                         <Row>
                             <FormItem {...formItemLayout} label="搜索名称：">
                                 <Input placeholder="请输入搜索名称" />
@@ -63,7 +63,7 @@ export default class RoleAdd extends Component {
                     </FormItem>
                     <FormItem {...formItemLayout} label="搜索名称：">
                         <Input placeholder="请输入搜索名称" />
-                    </FormItem> */}
+                    </FormItem>
                         <Row>
                             <Col style={{ textAlign: "center" }}>
                                 <Button type="primary" style={{ marginRight: "5px" }} onClick={this.save}>保存</Button>
