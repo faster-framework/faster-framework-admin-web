@@ -371,3 +371,13 @@ body {
     }
   }
 }
+.next-dialog .next-form{
+  .next-col-6{
+    width: 100px;
+    max-width: 100px;
+    white-space: nowrap;
+  }
+  .next-col-offset-1{
+    margin-left: 4px;
+  }
+}
