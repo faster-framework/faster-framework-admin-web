@@ -3,8 +3,8 @@ import { Table, Icon, Grid, Button, Input, Feedback } from '@icedesign/base';
 import TableList from '@components/TableList';
 import { FormBinder } from '@icedesign/form-binder';
 import Dialog from '@components/Dialog';
-import RoleAdd from './RoleAdd';
-import RoleEdit from './RoleEdit';
+import PermissionAdd from './PermissionAdd';
+import PermissionEdit from './PermissionEdit';
 import { http } from '@utils';
 import Permission from '@components/Permission';
 const { Col } = Grid;
@@ -70,17 +70,17 @@ export default class PermissionList extends Component {
           {/* 操作开始 */}
           <div key="operations">
             <Col l="12">
-              <Permission code="roles:add">
+              <Permission code="permissions:add">
                 <Button type="primary" onClick={() => this.refs.addDialog.show()}>
                   <Icon type="add" size="xs" />添加
                 </Button>
               </Permission>
-              <Permission code="roles:modify">
+              <Permission code="permissions:modify">
                 <Button type="primary" onClick={this.showEditDialog}>
                   <Icon type="edit" size="xs" />编辑
                  </Button>
               </Permission>
-              <Permission code="roles:delete">
+              <Permission code="permissions:delete">
                 <Button type="primary" onClick={this.showDeleteDialog}>
                   <Icon type="close" size="xs" />删除
                 </Button>
@@ -106,14 +106,14 @@ export default class PermissionList extends Component {
           ref="addDialog"
           footer={false}
         >
-          <RoleAdd {...this.refs}></RoleAdd>
+          <PermissionAdd {...this.refs}></PermissionAdd>
         </Dialog>
         <Dialog
           title="编辑权限"
           ref="editDialog"
           footer={false}
         >
-          <RoleEdit {...this.refs}></RoleEdit>
+          <PermissionEdit {...this.refs}></PermissionEdit>
         </Dialog>
         <Dialog
           title="删除权限"
