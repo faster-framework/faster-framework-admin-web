@@ -5,7 +5,7 @@ import store from '@redux';
 import * as loadingActions from '@redux/actions/loadingActions'
 
 const httpUtil = axios.create({
-    baseURL: 'http://127.0.0.1:8080/',
+    baseURL: 'http://139.199.23.31:8080/',
     timeout: 5000,
     headers: { 'Content-Type': 'application/json' }
 })

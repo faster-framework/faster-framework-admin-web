@@ -55,7 +55,7 @@ export default class RoleEdit extends Component {
                         <Row>
                             <Col style={{ textAlign: "center" }}>
                                 <Button type="primary" style={{ marginRight: "5px" }} onClick={this.save}>保存</Button>
-                                <Button>取消</Button>
+                                <Button onClick={()=>this.props.editDialog.hide()}>取消</Button>
                             </Col>
                         </Row>
                     </Form>
