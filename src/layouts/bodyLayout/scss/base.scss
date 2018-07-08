@@ -372,12 +372,41 @@ body {
   }
 }
 .next-dialog .next-form{
+  .next-form-item{
+    margin-bottom: 0;
+    margin-top: 20px;
+  }
   .next-col-6{
     width: 100px;
     max-width: 100px;
+    display: inline-block;
     white-space: nowrap;
+    flex: auto;
   }
   .next-col-offset-1{
     margin-left: 4px;
+  }
+  .next-form-item-control > .next-input-group, .next-form-item-control > .next-input{
+    display: block;
+  }
+  & > .next-row{
+    padding: 0 4px;
+    &:last-of-type{
+      margin-top: 30px;
+    }
+    .next-row{
+      flex-wrap: wrap;
+      .next-row{
+        margin-bottom: 20px;
+        &:first-of-type{
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+  .next-form-item-control > span:last-of-type:not(.next-input) {
+    display: block;
+    margin-bottom: -14px;
+    margin-top: 2px;
   }
 }
