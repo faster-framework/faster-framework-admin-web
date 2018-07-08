@@ -4,6 +4,7 @@ import TableList from '@components/TableList';
 import { FormBinder } from '@icedesign/form-binder';
 import Dialog from '@components/Dialog';
 import RoleAdd from './RoleAdd';
+import RoleEdit from './RoleEdit';
 import { http } from '@utils';
 import Permission from '@components/Permission';
 const { Col } = Grid;
@@ -17,36 +18,36 @@ export default class RoleList extends Component {
     }
   }
   /**
-   * 添加
-   */
-  save = () => {
-    this.refs.deleteDialog.hide();
-  };
-  /**
-   * 编辑
-   */
-  edit = () => {
-    this.refs.deleteDialog.hide();
-  };
-  /**
    * 删除
    */
   delete = () => {
     const selectRecrod = this.refs.tableList.getSelectRecords();
-    http.delete("/sys/roles/" + selectRecrod.id).then(() => {
+    http.delete("/sys/roles/" + selectRecrod[0].id).then(() => {
       this.refs.deleteDialog.hide();
       this.refs.tableList.refresh();
     });
   }
+
   /**
    * 删除对话框弹出
    */
   showDeleteDialog = () => {
     const selectRecrod = this.refs.tableList.getSelectRecords();
-    if (selectRecrod) {
+    if (selectRecrod.length == 1) {
       this.refs.deleteDialog.show();
     } else {
-      Feedback.toast.error('请选择记录！');
+      Feedback.toast.error('请选择一条记录！');
+    }
+  }
+  /**
+   * 编辑对话框弹出
+   */
+  showEditDialog = () => {
+    const selectRecrod = this.refs.tableList.getSelectRecords();
+    if (selectRecrod.length == 1) {
+      this.refs.editDialog.show();
+    } else {
+      Feedback.toast.error('请选择一条记录！');
     }
   }
 
@@ -75,7 +76,7 @@ export default class RoleList extends Component {
                 </Button>
               </Permission>
               <Permission code="roles:modify">
-                <Button type="primary" onClick={() => this.refs.editDialog.show()}>
+                <Button type="primary" onClick={this.showEditDialog}>
                   <Icon type="edit" size="xs" />编辑
                  </Button>
               </Permission>
@@ -98,22 +99,20 @@ export default class RoleList extends Component {
         {/* 表格结束 */}
 
         {/* 弹框开始 */}
-        
+
         <Dialog
           title="添加角色"
           ref="addDialog"
           footer={false}
-          style={{width:'60%'}}
         >
-          <RoleAdd></RoleAdd>
+          <RoleAdd {...this.refs}></RoleAdd>
         </Dialog>
         <Dialog
           title="编辑角色"
           ref="editDialog"
           footer={false}
-          style={{width:'80%'}}
         >
-          <RoleAdd></RoleAdd>
+          <RoleEdit {...this.refs}></RoleEdit>
         </Dialog>
         <Dialog
           title="删除角色"

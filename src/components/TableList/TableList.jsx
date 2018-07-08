@@ -71,11 +71,7 @@ export default class TableList extends Component {
      * 如果多多选，返回数组
      */
     getSelectRecords = () => {
-        if (this.state.tableProps.rowSelection.mode === 'single') {
-            return this.state.selectRecords.length > 1 ? this.state.selectRecords : this.state.selectRecords[0];
-        } else {
-            return this.state.selectRecords;
-        }
+        return this.state.selectRecords;
     }
     /**
      * 改变选中的值

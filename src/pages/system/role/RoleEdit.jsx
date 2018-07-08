@@ -11,23 +11,28 @@ import {
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
 
-export default class RoleAdd extends Component {
-    static displayName = 'RoleAdd';
+export default class RoleEdit extends Component {
+    static displayName = 'RoleEdit';
     constructor(props) {
         super(props);
         this.state = {
             values: {}
         }
+        const selectRecord = this.props.tableList.getSelectRecords()[0];
+        http.get('/sys/roles/' + selectRecord.id).then(response => {
+            this.setState({
+                values: Object.assign({}, this.state.values, response.data)
+            })
+        })
     }
-
 
     save = () => {
         this.refs.postForm.validateAll((errors, values) => {
             if (errors) {
                 return false;
             }
-            http.post('/sys/roles', this.state.values).then(() => {
-                this.props.addDialog.hide();
+            http.put('/sys/roles/' + this.state.values.id, this.state.values).then(() => {
+                this.props.editDialog.hide();
                 this.props.tableList.refresh();
             });
         });
@@ -47,23 +52,6 @@ export default class RoleAdd extends Component {
                             </FormBinder>
                             <FormError name="name" />
                         </FormItem>
-
-                        {/* <FormItem>
-                        <Row>
-                            <FormItem {...formItemLayout} label="搜索名称：">
-                                <Input placeholder="请输入搜索名称" />
-                            </FormItem>
-                            <FormItem {...formItemLayout} label="较长搜索名称：">
-                                <Input placeholder="请输入搜索名称" />
-                            </FormItem>
-                            <FormItem {...formItemLayout} label="搜索名称：">
-                                <Input placeholder="请输入搜索名称" />
-                            </FormItem>
-                        </Row>
-                    </FormItem>
-                    <FormItem {...formItemLayout} label="搜索名称：">
-                        <Input placeholder="请输入搜索名称" />
-                    </FormItem> */}
                         <Row>
                             <Col style={{ textAlign: "center" }}>
                                 <Button type="primary" style={{ marginRight: "5px" }} onClick={this.save}>保存</Button>
