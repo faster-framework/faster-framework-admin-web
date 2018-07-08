@@ -1,14 +1,4 @@
-import React, { Component } from 'react';
-
-import StatisticalCard from './components/StatisticalCard';
-
-import DataStatistics from './components/DataStatistics';
-
-import RealTimeStatistics from './components/RealTimeStatistics';
-
-import LatestNews from './components/LatestNews';
-
-import './Dashboard.scss';
+import React, { Component } from '../../../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react';
 
 export default class Dashboard extends Component {
   static displayName = 'Dashboard';
@@ -20,15 +10,9 @@ export default class Dashboard extends Component {
 
   render() {
     return (
-      <div className="dashboard-page">
-        <StatisticalCard />
-
-        <DataStatistics />
-
-        <RealTimeStatistics />
-
-        <LatestNews />
-      </div>
+      <h1>
+        欢迎你，大兄弟。
+      </h1>
     );
   }
 }

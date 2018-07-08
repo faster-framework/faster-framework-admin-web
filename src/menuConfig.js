@@ -35,8 +35,9 @@ const asideMenuConfig = [
     icon: 'yonghu',
     path: '/sys',
     children: [
-      { name: '用户管理', path: '/users/list', code: 'users:manage' },
-      { name: '角色管理', path: '/role/list', code: 'roles:manage' },
+      { name: '用户管理', path: '/user', code: 'users:manage' },
+      { name: '角色管理', path: '/role', code: 'roles:manage' },
+      { name: '权限管理', path: '/permission', code: 'users:manage' },
     ],
   },
 ];

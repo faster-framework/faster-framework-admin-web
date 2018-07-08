@@ -9,6 +9,7 @@ import UserList from './pages/system/user';
 import NotFound from './pages/notFound';
 import Login from './pages/login';
 import RoleList from './pages/system/role';
+import PermissionList from './pages/system/permission';
 
 const routerConfig = [
   {
@@ -21,24 +22,16 @@ const routerConfig = [
     component: Dashboard,
   },
   {
-    path: '/sys/users',
-    component: UserList,
-    children: [
-      {
-        path: 'list',
-        component: UserList,
-      },
-    ],
+    path: '/sys/user',
+    component: UserList
   },
   {
     path: '/sys/role',
-    component: RoleList,
-    children: [
-      {
-        path: 'list',
-        component: RoleList,
-      },
-    ],
+    component: RoleList
+  },
+  {
+    path: '/sys/permission',
+    component: PermissionList
   },
   {
     path: '*',

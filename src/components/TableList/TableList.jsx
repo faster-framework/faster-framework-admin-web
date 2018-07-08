@@ -127,18 +127,25 @@ export default class TableList extends Component {
      * 
      */
     loadData = (pageNum = this.state.pageParam.pageNum, pageSize = this.state.pageParam.pageSize) => {
-        const pageReq = { pageNum: pageNum, pageSize: pageSize };
+        const isTree = this.state.tableProps.isTree;
+        const pageReq = isTree ? {} : { pageNum: pageNum, pageSize: pageSize };
         //获取用户列表数据
         http.get(this.state.api, {
             params: Object.assign({}, this.state.filterParam, pageReq)
         }).then(response => {
             const resultData = response.data;
-            this.setState({
-                list: resultData.list,
-                pageParam: Object.assign({}, this.state.pageParam, {
-                    pages: Number(resultData.pages)
-                })
-            });
+            if (isTree) {
+                this.setState({
+                    list: resultData
+                });
+            } else {
+                this.setState({
+                    list: resultData.list,
+                    pageParam: Object.assign({}, this.state.pageParam, {
+                        pages: Number(resultData.pages)
+                    })
+                });
+            }
         })
     }
 
@@ -213,15 +220,19 @@ export default class TableList extends Component {
                     >
                         {this.state.tables}
                     </Table>
-                    <Pagination
-                        className="pagination"
-                        pageSizeSelector="dropdown"
-                        pageSizeList={[10, 20, 50]}
-                        total={this.state.pageParam.pages}
-                        pageSize={this.state.pageParam.pageSize}
-                        onChange={this.onPageNumChange}
-                        onPageSizeChange={this.onPageSizeChange}
-                    />
+                    {
+                        !this.state.tableProps.isTree &&
+                        (<Pagination
+                            className="pagination"
+                            pageSizeSelector="dropdown"
+                            pageSizeList={[10, 20, 50]}
+                            total={this.state.pageParam.pages}
+                            pageSize={this.state.pageParam.pageSize}
+                            onChange={this.onPageNumChange}
+                            onPageSizeChange={this.onPageSizeChange}
+                        />)
+                    }
+
                 </IceContainer>
             </div >
 

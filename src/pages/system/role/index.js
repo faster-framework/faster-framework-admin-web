@@ -1,3 +1,3 @@
-import UserList from './RoleList';
+import RoleList from './RoleList';
 
-export default UserList;
+export default RoleList;

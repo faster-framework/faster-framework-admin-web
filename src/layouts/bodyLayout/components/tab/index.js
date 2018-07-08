@@ -1,3 +1,3 @@
-import tab from './Tab'
+import Tab from './Tab'
 
-export default tab;
+export default Tab;

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import Layout from '@icedesign/layout';
+import React, { Component } from '../../../../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react';
+import Layout from '@icedesign/layout/lib';
 import './Layout.scss';
 import { Overlay, Loading } from "@icedesign/base";
-import { connect } from 'react-redux'
+import { connect } from '../../../../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-redux'
 
 @connect(state => state)
 export default class UserLayout extends Component {
