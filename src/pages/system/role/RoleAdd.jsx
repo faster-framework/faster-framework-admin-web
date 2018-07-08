@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Select } from '@icedesign/base';
+import { Input, Grid, Form, Button, Select, Icon, Balloon } from '@icedesign/base';
 import {
     FormBinderWrapper as IceFormBinderWrapper,
     FormBinder as IceFormBinder,
@@ -10,7 +10,22 @@ import {
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
-
+const style = {
+    padding: "20px",
+    background: "#F7F8FA",
+    margin: "20px"
+};
+const label = (
+    <span>
+        名称：<Balloon
+            type="primary"
+            trigger={<Icon type="prompt" size="small" />}
+            closable={false}
+        >
+            blablablablablablablabla
+      </Balloon>
+    </span>
+);
 export default class ContentEditor extends Component {
     static displayName = 'ContentEditor';
 
@@ -43,53 +58,45 @@ export default class ContentEditor extends Component {
     };
 
     render() {
+        const formItemLayout = {
+          labelCol: { span: 6, offset: 1 }
+        };
         return (
             <div className="content-editor">
-                <IceFormBinderWrapper
-                    value={this.state.value}
-                    ref="postForm"
+                <Form
+                    justify="start"
+                    style={style}
                 >
-                    <Form direction="ver" size="large" labelTextAlign="right" >
+                    <FormItem {...formItemLayout} label="较长搜索名称：">
+                        <Input placeholder="请输入搜索名称" />
+                    </FormItem>
+                    <FormItem {...formItemLayout} label="搜索名称：">
+                        <Input placeholder="请输入搜索名称" />
+                    </FormItem>
+                    <FormItem>
                         <Row>
-                            <Col span="11">
-                                <FormItem label="角色名称：" required wrapperCol="24">
-                                    <IceFormBinder name="name" required message="角色名称必填">
-                                        <Input />
-                                    </IceFormBinder>
-                                    <IceFormError name="name" />
-                                </FormItem>
-                            </Col>
+                            <FormItem {...formItemLayout} label="搜索名称：">
+                                <Input placeholder="请输入搜索名称" />
+                            </FormItem>
+                            <FormItem {...formItemLayout} label="较长搜索名称：">
+                                <Input placeholder="请输入搜索名称" />
+                            </FormItem>
+                            <FormItem {...formItemLayout} label="搜索名称：">
+                                <Input placeholder="请输入搜索名称" />
+                            </FormItem>
                         </Row>
-                        <Row>
-                            <Col span="11">
-                                <FormItem label="作者：" required>
-                                    <IceFormBinder
-                                        name="author"
-                                        required
-                                        message="作者信息必填"
-                                    >
-                                        <Input placeholder="填写作者名称" />
-                                    </IceFormBinder>
-                                    <IceFormError name="author" />
-                                </FormItem>
-                            </Col>
-                        </Row>
-                        
-
-                        <FormItem label="">
-                            <Button type="primary" onClick={this.handleSubmit}>
-                                发布文章
-                            </Button>
-                        </FormItem>
-                    </Form>
-                </IceFormBinderWrapper>
+                    </FormItem>
+                    <FormItem {...formItemLayout} label="搜索名称：">
+                        <Input placeholder="请输入搜索名称" />
+                    </FormItem>
+                    <Row>
+                        <Col style={{ textAlign: "right" }}>
+                            <Button type="primary" style={{ marginRight: "5px" }}>搜索</Button>
+                            <Button>清除条件</Button>
+                        </Col>
+                    </Row>
+                </Form>
             </div>
         );
     }
 }
-
-const styles = {
-    cats: {
-        width: '100%',
-    },
-};
