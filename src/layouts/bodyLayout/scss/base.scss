@@ -380,4 +380,14 @@ body {
   .next-col-offset-1{
     margin-left: 4px;
   }
+  .next-form-item-control > .next-input-group, .next-form-item-control > .next-input{
+    display: block;
+  }
+  .next-row{
+    padding: 4px 14px;
+  }
+  .next-form-item-control > span:last-of-type:not(.next-input) {
+    display: block;
+    margin-bottom: -14px;
+  }
 }
