@@ -1,7 +1,7 @@
 import { Tab } from "@icedesign/base";
-import { withRouter } from '../../../../../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-router';
-import { connect } from '../../../../../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-redux';
-import { bindActionCreators } from '../../../../../../../../../../Library/Caches/typescript/2.9/node_modules/redux';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as tabActions from '@redux/actions/tabActions';
 import { recursiveMenu } from "@/menuConfig";
 const TabPane = Tab.TabPane;

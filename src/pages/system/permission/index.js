@@ -1,3 +1,3 @@
-import Permission from './Permission';
+import Permission from './PermissionList';
 
 export default Permission;

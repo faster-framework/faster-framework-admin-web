@@ -1,4 +1,4 @@
-import React, { Component } from '../../../../../../../../../Library/Caches/typescript/2.9/node_modules/@types/react';
+import React, { Component } from 'react';
 import { Input, Grid, Form, Button } from '@icedesign/base';
 import { http } from '@utils';
 import {
