@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Grid, Form, Button, TreeSelect } from '@icedesign/base';
-import { http } from '@utils';
+import { http, utils } from '@utils';
 import {
     FormBinderWrapper,
     FormBinder,
@@ -24,8 +24,9 @@ export default class RoleAdd extends Component {
         }
         http.get('/sys/permissions').then((response) => {
             console.info(response.data)
+            //列表转成TreeSelect控件所需数据
             this.setState({
-                permissionTrees: response.data
+                permissionTrees: utils.convertTreeSelectData(response.data)
             });
         });
     }

@@ -55,7 +55,7 @@ export default class PermissionList extends Component {
     return (
       <div>
         {/* 表格开始 */}
-        <TableList ref="tableList" api='/sys/permissions' title="权限列表" defaultFilterParam={this.defaultFilterParam}>
+        <TableList ref="tableList" api='/sys/permissions/tree' title="权限列表" defaultFilterParam={this.defaultFilterParam}>
           {/* 筛选开始 */}
           <div key="filters">
             <Col xxs="24" l="8">
