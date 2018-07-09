@@ -7,7 +7,7 @@ export default class BaseDialog extends Component {
   constructor(props) {
     super(props);
     this.state = this.props;
-    const style = Object.assign({}, this.state.style, { width: '100%', maxWidth: '900px' });
+    const style = Object.assign({}, this.state.style, { minWidth: '320px' });
     this.state = Object.assign({}, this.state, { style: style });
   }
 
@@ -32,7 +32,6 @@ export default class BaseDialog extends Component {
         isFullScreen
         onCancel={this.hide}
         onClose={this.hide}
-        locale={{ ok: '保存', cancel: '取消' }}
         {...this.state}
         visible={this.state.visible}
       >
