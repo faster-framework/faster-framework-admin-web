@@ -7,6 +7,7 @@ import RoleAdd from './RoleAdd';
 import RoleEdit from './RoleEdit';
 import { http } from '@utils';
 import Permission from '@components/Permission';
+import RolePermissionList from './RolePermissionList';
 const { Col } = Grid;
 export default class RoleList extends Component {
   static displayName = 'RoleList';
@@ -17,6 +18,19 @@ export default class RoleList extends Component {
     this.defaultFilterParam = {
     }
   }
+
+  /**
+   * 选择验证
+   */
+  chooseAndShow = (dialog) => {
+    const selectRecrod = this.refs.tableList.getSelectRecords();
+    if (selectRecrod.length == 1) {
+      dialog.show();
+    } else {
+      Feedback.toast.error('请选择一条记录！');
+    }
+  }
+
   /**
    * 删除
    */
@@ -26,29 +40,6 @@ export default class RoleList extends Component {
       this.refs.deleteDialog.hide();
       this.refs.tableList.refresh();
     });
-  }
-
-  /**
-   * 删除对话框弹出
-   */
-  showDeleteDialog = () => {
-    const selectRecrod = this.refs.tableList.getSelectRecords();
-    if (selectRecrod.length == 1) {
-      this.refs.deleteDialog.show();
-    } else {
-      Feedback.toast.error('请选择一条记录！');
-    }
-  }
-  /**
-   * 编辑对话框弹出
-   */
-  showEditDialog = () => {
-    const selectRecrod = this.refs.tableList.getSelectRecords();
-    if (selectRecrod.length == 1) {
-      this.refs.editDialog.show();
-    } else {
-      Feedback.toast.error('请选择一条记录！');
-    }
   }
 
   render() {
@@ -76,13 +67,18 @@ export default class RoleList extends Component {
                 </Button>
               </Permission>
               <Permission code="roles:modify">
-                <Button type="primary" onClick={this.showEditDialog}>
+                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.editDialog)}>
                   <Icon type="edit" size="xs" />编辑
                  </Button>
               </Permission>
               <Permission code="roles:delete">
-                <Button type="primary" onClick={this.showDeleteDialog}>
+                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.deleteDialog)}>
                   <Icon type="close" size="xs" />删除
+                </Button>
+              </Permission>
+              <Permission code="roles:permissions:list">
+                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.choosePermissionsDialog)}>
+                  <Icon type="set" size="xs" />选择权限
                 </Button>
               </Permission>
             </Col>
@@ -121,6 +117,13 @@ export default class RoleList extends Component {
           onOk={this.delete}
         >
           删除操作不可恢复，确认删除？
+        </Dialog>
+        <Dialog
+          title="选择权限"
+          ref="choosePermissionsDialog"
+          footer={false}
+        >
+          <RolePermissionList {...this.refs}></RolePermissionList>
         </Dialog>
         {/* 弹框结束 */}
 

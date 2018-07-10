@@ -24,8 +24,8 @@ export default class TableList extends Component {
                 filterProps = filterFind ? filterFind.props : filterFind;
                 filters = filterProps ? filterProps.children : filterProps;
             } else {
-                tableProps = this.props.children;
-                tables = this.props.children.props.children;
+                tableProps = this.props.children.props;
+                tables = tableProps.children;
             }
         }
         const defaultSelection = {
@@ -36,7 +36,7 @@ export default class TableList extends Component {
         }
         if (tableProps) {
             const rowSelection = Object.assign({}, defaultSelection, tableProps.rowSelection);
-            tableProps = Object.assign({}, tableProps, { rowSelection: rowSelection })
+            tableProps = Object.assign({}, tableProps, { rowSelection: rowSelection, onRowOpen: this.onRowOpen, openRowKeys: [] })
         }
         this.state = {
             filterParam: this.props.defaultFilterParam,
@@ -59,6 +59,29 @@ export default class TableList extends Component {
         };
         this.loadData();
     }
+    initSelectKeys = (keys) => {
+        const rowSelection = Object.assign({}, this.state.tableProps.rowSelection, { selectedRowKeys: keys });
+        const tableProps = Object.assign({}, this.state.tableProps, { rowSelection: rowSelection, openRowKeys: keys });
+        this.setState({
+            selectRecords: keys.map(item => { return { id: item } }),
+            tableProps, tableProps
+        });
+    }
+    onRowOpen = (openRowKeys, currentRowKey, opened, currentRecord) => {
+        const existRowsKey = this.state.tableProps.openRowKeys;
+        if (opened) {
+            existRowsKey.push(currentRowKey);
+        } else {
+            const selectIndex = existRowsKey.indexOf(currentRowKey);
+            if (selectIndex > -1) {
+                existRowsKey.splice(selectIndex, 1);
+            }
+        }
+        this.setState({
+            tableProps: Object.assign({}, this.state.tableProps, { openRowKeys: existRowsKey })
+        });
+        this.onSelect(true,currentRecord,this.state.selectRecords);
+    }
     /**
      * 刷新表格
      */
@@ -67,8 +90,6 @@ export default class TableList extends Component {
     }
     /**
      * 获取当前选择的行
-     * 如果为单选，返回对象
-     * 如果多多选，返回数组
      */
     getSelectRecords = () => {
         return this.state.selectRecords;
@@ -83,6 +104,7 @@ export default class TableList extends Component {
             selectRecords: records
         });
     }
+
     /**
      * 点击左上角复选框选择全部
      */

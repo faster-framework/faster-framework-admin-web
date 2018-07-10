@@ -19,7 +19,7 @@ export default class RoleEdit extends Component {
             values: {}
         }
         const selectRecord = this.props.tableList.getSelectRecords()[0];
-        http.get('/sys/roles/' + selectRecord.id).then(response => {
+        http.get('/sys/permissions/' + selectRecord.id).then(response => {
             this.setState({
                 values: Object.assign({}, this.state.values, response.data)
             })
@@ -31,7 +31,7 @@ export default class RoleEdit extends Component {
             if (errors) {
                 return false;
             }
-            http.put('/sys/roles/' + this.state.values.id, this.state.values).then(() => {
+            http.put('/sys/permissions/' + this.state.values.id, this.state.values).then(() => {
                 this.props.editDialog.hide();
                 this.props.tableList.refresh();
             });
@@ -40,27 +40,37 @@ export default class RoleEdit extends Component {
 
     render() {
         const formItemLayout = {
-            labelCol: { span: 6, offset: 1 }
+            labelCol: { fixedSpan: 4 },
+            wrapperCol: { fixedSpan: 8 },
+            style: {
+                marginRight: '10px'
+            }
         };
         return (
-            <div>
-                <FormBinderWrapper value={this.state.values} ref="postForm">
-                    <Form>
-                        <FormItem {...formItemLayout} label="角色名称：">
-                            <FormBinder name="name" required message="请填写角色名称">
-                                <Input placeholder="请输入角色名称" />
+            <FormBinderWrapper value={this.state.values} ref="postForm">
+                <Form>
+                    <Row wrap>
+                        <FormItem {...formItemLayout} label="权限名称：">
+                            <FormBinder name="name" required message="请填写权限名称">
+                                <Input placeholder="请输入权限名称" />
                             </FormBinder>
                             <FormError name="name" />
                         </FormItem>
-                        <Row>
-                            <Col style={{ textAlign: "center" }}>
-                                <Button type="primary" style={{ marginRight: "5px" }} onClick={this.save}>保存</Button>
-                                <Button onClick={()=>this.props.editDialog.hide()}>取消</Button>
-                            </Col>
-                        </Row>
-                    </Form>
-                </FormBinderWrapper>
-            </div>
+                        <FormItem {...formItemLayout} label="权限编码：">
+                            <FormBinder name="code" required message="请填写权限编码">
+                                <Input placeholder="请输入权限编码" />
+                            </FormBinder>
+                            <FormError name="code" />
+                        </FormItem>
+                    </Row>
+                    <Row wrap>
+                        <Col style={{ textAlign: "center" }}>
+                            <Button type="primary" style={formItemLayout.style} onClick={this.save}>保存</Button>
+                            <Button onClick={() => this.props.editDialog.hide()}>取消</Button>
+                        </Col>
+                    </Row>
+                </Form>
+            </FormBinderWrapper>
         );
     }
 }

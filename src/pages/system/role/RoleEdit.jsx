@@ -40,27 +40,31 @@ export default class RoleEdit extends Component {
 
     render() {
         const formItemLayout = {
-            labelCol: { span: 6, offset: 1 }
+            labelCol: { fixedSpan: 4 },
+            wrapperCol: { fixedSpan: 8 },
+            style: {
+                marginRight: '10px'
+            }
         };
         return (
-            <div>
-                <FormBinderWrapper value={this.state.values} ref="postForm">
-                    <Form>
+            <FormBinderWrapper value={this.state.values} ref="postForm">
+                <Form>
+                    <Row wrap>
                         <FormItem {...formItemLayout} label="角色名称：">
                             <FormBinder name="name" required message="请填写角色名称">
                                 <Input placeholder="请输入角色名称" />
                             </FormBinder>
                             <FormError name="name" />
                         </FormItem>
-                        <Row>
-                            <Col style={{ textAlign: "center" }}>
-                                <Button type="primary" style={{ marginRight: "5px" }} onClick={this.save}>保存</Button>
-                                <Button onClick={()=>this.props.editDialog.hide()}>取消</Button>
-                            </Col>
-                        </Row>
-                    </Form>
-                </FormBinderWrapper>
-            </div>
+                    </Row>
+                    <Row wrap>
+                        <Col style={{ textAlign: "center" }}>
+                            <Button type="primary" style={formItemLayout.style} onClick={this.save}>保存</Button>
+                            <Button onClick={() => this.props.editDialog.hide()}>取消</Button>
+                        </Col>
+                    </Row>
+                </Form>
+            </FormBinderWrapper>
         );
     }
 }

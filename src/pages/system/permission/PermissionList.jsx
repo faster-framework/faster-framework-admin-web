@@ -18,6 +18,18 @@ export default class PermissionList extends Component {
     }
   }
   /**
+ * 选择验证
+ */
+  chooseAndShow = (dialog) => {
+    const selectRecrod = this.refs.tableList.getSelectRecords();
+    if (selectRecrod.length == 1) {
+      dialog.show();
+    } else {
+      Feedback.toast.error('请选择一条记录！');
+    }
+  }
+
+  /**
    * 删除
    */
   delete = () => {
@@ -26,29 +38,6 @@ export default class PermissionList extends Component {
       this.refs.deleteDialog.hide();
       this.refs.tableList.refresh();
     });
-  }
-
-  /**
-   * 删除对话框弹出
-   */
-  showDeleteDialog = () => {
-    const selectRecrod = this.refs.tableList.getSelectRecords();
-    if (selectRecrod.length == 1) {
-      this.refs.deleteDialog.show();
-    } else {
-      Feedback.toast.error('请选择一条记录！');
-    }
-  }
-  /**
-   * 编辑对话框弹出
-   */
-  showEditDialog = () => {
-    const selectRecrod = this.refs.tableList.getSelectRecords();
-    if (selectRecrod.length == 1) {
-      this.refs.editDialog.show();
-    } else {
-      Feedback.toast.error('请选择一条记录！');
-    }
   }
 
   render() {
@@ -70,18 +59,18 @@ export default class PermissionList extends Component {
           {/* 操作开始 */}
           <div key="operations">
             <Col l="12">
-              <Permission code="permissions:add">
+              <Permission code="roles:add">
                 <Button type="primary" onClick={() => this.refs.addDialog.show()}>
                   <Icon type="add" size="xs" />添加
                 </Button>
               </Permission>
-              <Permission code="permissions:modify">
-                <Button type="primary" onClick={this.showEditDialog}>
+              <Permission code="roles:modify">
+                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.editDialog)}>
                   <Icon type="edit" size="xs" />编辑
                  </Button>
               </Permission>
-              <Permission code="permissions:delete">
-                <Button type="primary" onClick={this.showDeleteDialog}>
+              <Permission code="roles:delete">
+                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.deleteDialog)}>
                   <Icon type="close" size="xs" />删除
                 </Button>
               </Permission>
