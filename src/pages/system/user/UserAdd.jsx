@@ -69,7 +69,7 @@ export default class UserAdd extends Component {
                     <Row wrap>
                         <FormItem {...formItemLayout} label="密码：">
                             <FormBinder name="password" required message="请填写密码">
-                                <Input type="password" placeholder="请输入密码" />
+                                <Input htmlType="password" placeholder="请输入密码" />
                             </FormBinder>
                             <FormError name="password" />
                         </FormItem>
