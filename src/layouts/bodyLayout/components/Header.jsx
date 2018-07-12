@@ -117,7 +117,7 @@ export default class Header extends PureComponent {
             <ul>
               <li className="user-profile-menu-item">
                 <Button shape="text" onClick={this.logout} size="small">
-                  <FoundationSymbol type="backward" size="small" />注销登录
+                  <FoundationSymbol type="backward" size="small" />退出登录
                 </Button>
               </li>
             </ul>

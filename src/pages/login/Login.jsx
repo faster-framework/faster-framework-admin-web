@@ -87,7 +87,7 @@ export default class UserLogin extends Component {
               <Row className="formItem">
                 <Col className="formItemCol">
                   <IceIcon type="person" size="small" className="inputIcon" />
-                  <IceFormBinder name="account" required message="必填">
+                  <IceFormBinder name="account" required message="请输入用户名">
                     <Input size="large" maxLength={20} placeholder="用户名" />
                   </IceFormBinder>
                 </Col>
@@ -98,7 +98,7 @@ export default class UserLogin extends Component {
               <Row className="formItem">
                 <Col className="formItemCol">
                   <IceIcon type="lock" size="small" className="inputIcon" />
-                  <IceFormBinder name="password" required message="必填">
+                  <IceFormBinder name="password" required message="请输入密码">
                     <Input
                       size="large"
                       htmlType="password"
