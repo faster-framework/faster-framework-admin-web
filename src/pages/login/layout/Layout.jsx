@@ -23,15 +23,12 @@ export default class UserLayout extends Component {
           </Loading>
         </Overlay>
         <div className="header">
-          <a href="#" className="meta">
             <img
               className="logo"
               src="https://img.alicdn.com/tfs/TB13UQpnYGYBuNjy0FoXXciBFXa-242-134.png"
               alt="logo"
             />
-            <span className="title">飞冰</span>
-          </a>
-          <p className="desc">飞冰让前端开发简单而友好</p>
+            <span className="title">Faster-Admin</span>
         </div>
         {this.props.children}
       </Layout>

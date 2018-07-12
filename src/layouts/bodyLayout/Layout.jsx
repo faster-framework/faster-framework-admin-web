@@ -8,9 +8,9 @@ import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import FoundationSymbol from 'foundation-symbol';
 import { enquire } from 'enquire-js';
-import Header from '@components/Header';
-import Footer from '@components/Footer';
-import Logo from '@components/Logo';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Logo from './components/Logo';
 import './scss/light.scss';
 import './scss/dark.scss';
 import { connect } from 'react-redux'

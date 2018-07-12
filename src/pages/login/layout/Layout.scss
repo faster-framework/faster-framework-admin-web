@@ -6,13 +6,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
-  .meta {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-  }
+
   .title {
     text-align: center;
     font-size: 33px;
@@ -20,11 +16,7 @@
     font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     font-weight: 600;
   }
-  .desc {
-    margin: 10px 0;
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.45);
-  }
+
   .logo {
     margin-right: 10px;
     width: 48px;
@@ -68,18 +60,7 @@
   .checkbox {
     margin-left: 5px;
   }
-  .tips {
-    justify-content: center;
-  }
-  .tips-text {
-    color: #999;
-    text-decoration: none;
-    font-size: 13px;
-  }
-  .line {
-    color: #dcd6d6;
-    margin: 0 8px;
-  }
+
 
   .next-input.next-input-single {
     width: 368px;
