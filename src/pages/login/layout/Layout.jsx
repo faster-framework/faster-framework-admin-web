@@ -5,7 +5,7 @@ import { Overlay, Loading } from "@icedesign/base";
 import { connect } from 'react-redux'
 
 @connect(state => state)
-export default class UserLayout extends Component {
+export default class LoginLayout extends Component {
   static propTypes = {};
 
   static defaultProps = {};

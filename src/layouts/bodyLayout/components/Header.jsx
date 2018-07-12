@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Balloon, Icon } from '@icedesign/base';
-import IceImg from '@icedesign/img';
+import { Balloon, Icon, Button, Dialog, Feedback } from '@icedesign/base';
 import Layout from '@icedesign/layout';
 import Menu from '@icedesign/menu';
 import FoundationSymbol from 'foundation-symbol';
@@ -8,8 +7,34 @@ import cx from 'classnames';
 import { Link } from 'react-router-dom';
 import { headerMenuConfig } from '@/menuConfig';
 import Logo from './Logo';
+import cookie from 'react-cookies';
+import { http } from '@utils';
+import { withRouter } from 'react-router';
 
+@withRouter
 export default class Header extends PureComponent {
+  constructor(props) {
+    super(props);
+    const name = cookie.load('name');
+    this.state = {
+      name: name
+    }
+  }
+  logout = () => {
+    Dialog.confirm({
+      content: "确定要退出系统",
+      title: "注销",
+      onOk: () => {
+        http.delete("/logout").then(() => {
+          this.props.history.push('/login');
+          cookie.remove('token');
+          cookie.remove('name');
+          Feedback.toast.success("退出成功");
+        });
+      }
+    });
+
+  }
   render() {
     const { width, theme, isMobile, className, style } = this.props;
 
@@ -47,13 +72,13 @@ export default class Header extends PureComponent {
                         {!isMobile ? nav.name : null}
                       </Link>
                     ) : (
-                      <a {...linkProps}>
-                        {nav.icon ? (
-                          <FoundationSymbol type={nav.icon} size="small" />
-                        ) : null}
-                        {!isMobile ? nav.name : null}
-                      </a>
-                    )}
+                        <a {...linkProps}>
+                          {nav.icon ? (
+                            <FoundationSymbol type={nav.icon} size="small" />
+                          ) : null}
+                          {!isMobile ? nav.name : null}
+                        </a>
+                      )}
                   </Menu.Item>
                 );
               })}
@@ -73,22 +98,9 @@ export default class Header extends PureComponent {
                   fontSize: 12,
                 }}
               >
-                <IceImg
-                  height={40}
-                  width={40}
-                  src="https://img.alicdn.com/tfs/TB1L6tBXQyWBuNjy0FpXXassXXa-80-80.png"
-                  className="user-avatar"
-                />
                 <div className="user-profile">
                   <span className="user-name" style={{ fontSize: '13px' }}>
-                    淘小宝
-                  </span>
-                  <br />
-                  <span
-                    className="user-department"
-                    style={{ fontSize: '12px', color: '#999' }}
-                  >
-                    技术部
+                    {this.state.name}
                   </span>
                 </div>
                 <Icon
@@ -100,22 +112,13 @@ export default class Header extends PureComponent {
             }
             closable={false}
             className="user-profile-menu"
+            triggerType='click'
           >
             <ul>
               <li className="user-profile-menu-item">
-                <Link to="/">
-                  <FoundationSymbol type="person" size="small" />我的主页
-                </Link>
-              </li>
-              <li className="user-profile-menu-item">
-                <Link to="/">
-                  <FoundationSymbol type="repair" size="small" />设置
-                </Link>
-              </li>
-              <li className="user-profile-menu-item">
-                <Link to="/">
-                  <FoundationSymbol type="compass" size="small" />退出
-                </Link>
+                <Button shape="text" onClick={this.logout} size="small">
+                  <FoundationSymbol type="backward" size="small" />注销登录
+                </Button>
               </li>
             </ul>
           </Balloon>

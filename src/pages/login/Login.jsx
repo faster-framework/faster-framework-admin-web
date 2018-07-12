@@ -1,6 +1,5 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { http } from '@utils';
 import { Input, Button, Checkbox, Grid, Feedback } from '@icedesign/base';
 import {
