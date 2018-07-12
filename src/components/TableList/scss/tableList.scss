@@ -1,7 +1,8 @@
 .operation{
     margin-bottom: 10px;
-    Button:not(:first-child){
-        margin-left: 10px;
+    margin-left: -5px;
+    Button{
+        margin: 5px;
     }
 }
 .pagination{
@@ -18,7 +19,4 @@
             padding-right: 10px !important;
           }
       }
-}
-.form{
-    
 }

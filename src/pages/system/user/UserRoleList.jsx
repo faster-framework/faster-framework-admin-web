@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Table, Button, Feedback } from '@icedesign/base';
 import TableList from '@components/TableList';
 import { http } from '@utils';
-export default class RolePermissionList extends Component {
-  static displayName = 'RolePermissionList';
+export default class UserRolelist extends Component {
+  static displayName = 'UserRolelist';
 
   constructor(props) {
     super(props);
     this.selectRecord = this.props.tableList.getSelectRecords()[0];
-    http.get("/sys/roles/" + this.selectRecord.id + '/permissions').then((response) => {
+    http.get("/sys/users/" + this.selectRecord.id + '/roles').then((response) => {
       this.refs.tableList.initSelectKeys(response.data);
     })
   }
@@ -17,10 +17,10 @@ export default class RolePermissionList extends Component {
     const tableSelect = this.refs.tableList.getSelectRecords();
     const request = tableSelect.map(item => {
       return {
-        permissionId: item.id
+        roleId: item.id
       }
     })
-    http.put('/sys/roles/' + this.selectRecord.id + '/permissions/choose', {
+    http.put('/sys/users/' + this.selectRecord.id + '/roles/choose', {
       list: request
     }).then(() => {
       Feedback.toast.success('保存成功');
@@ -31,12 +31,11 @@ export default class RolePermissionList extends Component {
     return (
       <div>
         {/* 表格开始 */}
-        <TableList ref="tableList" api='/sys/permissions/tree' title="权限列表" defaultFilterParam={this.defaultFilterParam}>
+        <TableList ref="tableList" api='/sys/roles' title="角色列表" defaultFilterParam={this.defaultFilterParam}>
 
           {/* 列表开始  */}
-          <div key="tables" isTree={true} rowSelection={{ mode: 'multiple'}}>
-            <Table.Column title="权限名称" dataIndex="name" />
-            <Table.Column title="权限编码" dataIndex="code" />
+          <div key="tables" rowSelection={{ mode: 'multiple' }}>
+            <Table.Column title="角色名称" dataIndex="name" />
             <Table.Column title="创建时间" dataIndex="createDate" />
           </div>
           {/* 列表结束 */}
@@ -44,7 +43,7 @@ export default class RolePermissionList extends Component {
         {/* 表格结束 */}
         <div style={{ textAlign: "center" }}>
           <Button type="primary" style={{ 'marginRight': '10px' }} onClick={this.save}>保存</Button>
-          <Button onClick={() => this.props.choosePermissionsDialog.hide()}>取消</Button>
+          <Button onClick={() => this.props.chooseRoleDialog.hide()}>取消</Button>
         </div>
       </div>
     );

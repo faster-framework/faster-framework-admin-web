@@ -3,11 +3,15 @@ import { Table, Icon, Grid, Button, Input, Feedback } from '@icedesign/base';
 import TableList from '@components/TableList';
 import { FormBinder } from '@icedesign/form-binder';
 import Dialog from '@components/Dialog';
-import UserAdd from './UserAdd';
-import UserEdit from './UserEdit';
-import PwdModify from './PwdModify';
 import { http } from '@utils';
 import Permission from '@components/Permission';
+
+import UserAdd from './UserAdd';
+import UserEdit from './UserEdit';
+import UserPwdModify from './UserPwdModify';
+import UserRoleList from './UserRoleList';
+
+
 const { Col } = Grid;
 export default class UserList extends Component {
   static displayName = 'UserList';
@@ -22,7 +26,7 @@ export default class UserList extends Component {
   /**
    * 选择验证
    */
-  chooseAndShow = (dialog) => {
+  checkAndShow = (dialog) => {
     const selectRecrod = this.refs.tableList.getSelectRecords();
     if (selectRecrod.length == 1) {
       dialog.show();
@@ -37,6 +41,7 @@ export default class UserList extends Component {
   pwdReset = () => {
     const selectRecrod = this.refs.tableList.getSelectRecords();
     http.put(`/sys/users/${selectRecrod[0].id}/password/reset`).then(() => {
+      Feedback.toast.success('密码重置成功');
       this.refs.pwdResetDialog.hide();
       this.refs.tableList.refresh();
     });
@@ -52,7 +57,35 @@ export default class UserList extends Component {
       this.refs.tableList.refresh();
     });
   }
-
+  /**
+   * 渲染操作列
+   */
+  renderOper = (value, index, record) => {
+    return (
+      <div className="col-operation">
+        <Permission code="users:modify">
+          <Button shape="text" size="small" onClick={() => this.refs.editDialog.show()}>
+            修改
+          </Button>
+        </Permission>
+        <Permission code="users:password:change">
+          <Button shape="text" size="small" onClick={() => this.refs.pwdModifyDialog.show()}>
+            修改密码
+          </Button>
+        </Permission>
+        <Permission code="users:password:reset">
+          <Button shape="text" size="small" onClick={() => this.refs.pwdResetDialog.show()}>
+            重置密码
+          </Button>
+        </Permission>
+        <Permission code="users:roles:choose">
+          <Button shape="text" size="small" onClick={() => this.refs.chooseRoleDialog.show()}>
+            选择角色
+          </Button>
+        </Permission>
+      </div>
+    );
+  };
   render() {
     return (
       <div>
@@ -60,7 +93,7 @@ export default class UserList extends Component {
         <TableList ref="tableList" api='/sys/users' title="用户列表" defaultFilterParam={this.defaultFilterParam}>
           {/* 筛选开始 */}
           <div key="filters">
-            <Col xxs="24" l="8">
+            <Col xxs="24" m="12" l="8" >
               <span>用户名称:</span>
               <FormBinder name="name">
                 <Input />
@@ -71,33 +104,17 @@ export default class UserList extends Component {
 
           {/* 操作开始 */}
           <div key="operations">
-            <Col l="12">
-              <Permission code="users:add">
-                <Button type="primary" onClick={() => this.refs.addDialog.show()}>
-                  <Icon type="add" size="xs" />添加
+            <Permission code="users:add">
+              <Button type="primary" onClick={() => this.refs.addDialog.show()}>
+                <Icon type="add" size="xs" />添加
                 </Button>
-              </Permission>
-              <Permission code="users:modify">
-                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.editDialog)}>
-                  <Icon type="edit" size="xs" />编辑
-                 </Button>
-              </Permission>
-              <Permission code="users:password:change">
-                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.pwdModifyDialog)}>
-                  <Icon type="survey" size="xs" />修改密码
-                 </Button>
-              </Permission>
-              <Permission code="users:password:reset">
-                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.pwdResetDialog)}>
-                  <Icon type="refresh" size="xs" />重置密码
-                 </Button>
-              </Permission>
-              <Permission code="users:delete">
-                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.deleteDialog)}>
-                  <Icon type="close" size="xs" />删除
+            </Permission>
+
+            <Permission code="users:delete">
+              <Button type="primary" onClick={() => this.checkAndShow(this.refs.deleteDialog)}>
+                <Icon type="close" size="xs" />删除
                 </Button>
-              </Permission>
-            </Col>
+            </Permission>
           </div>
           {/* 操作结束 */}
 
@@ -106,6 +123,7 @@ export default class UserList extends Component {
             <Table.Column title="用户名" dataIndex="account" />
             <Table.Column title="用户姓名" dataIndex="name" />
             <Table.Column title="创建时间" dataIndex="createDate" />
+            <Table.Column title="操作" cell={this.renderOper} />
           </div>
           {/* 列表结束 */}
         </TableList>
@@ -128,11 +146,19 @@ export default class UserList extends Component {
           <UserEdit {...this.refs}></UserEdit>
         </Dialog>
         <Dialog
+          title="删除用户"
+          ref="deleteDialog"
+          locale={{ ok: '确认' }}
+          onOk={this.delete}
+        >
+          删除操作不可恢复，确认删除？
+        </Dialog>
+        <Dialog
           title="修改密码"
           ref="pwdModifyDialog"
           footer={false}
         >
-          <PwdModify {...this.refs}></PwdModify>
+          <UserPwdModify {...this.refs}></UserPwdModify>
         </Dialog>
         <Dialog
           title="重置密码"
@@ -140,15 +166,14 @@ export default class UserList extends Component {
           locale={{ ok: '确认' }}
           onOk={this.pwdReset}
         >
-          确认重置密码？
+          确认将密码重置为“123456”？
         </Dialog>
         <Dialog
-          title="删除用户"
-          ref="deleteDialog"
-          locale={{ ok: '确认' }}
-          onOk={this.delete}
+          title="选择角色"
+          ref="chooseRoleDialog"
+          footer={false}
         >
-          删除操作不可恢复，确认删除？
+          <UserRoleList {...this.refs}></UserRoleList>
         </Dialog>
         {/* 弹框结束 */}
 

@@ -3,11 +3,13 @@ import { Table, Icon, Grid, Button, Input, Feedback } from '@icedesign/base';
 import TableList from '@components/TableList';
 import { FormBinder } from '@icedesign/form-binder';
 import Dialog from '@components/Dialog';
-import RoleAdd from './RoleAdd';
-import RoleEdit from './RoleEdit';
 import { http } from '@utils';
 import Permission from '@components/Permission';
+
+import RoleAdd from './RoleAdd';
+import RoleEdit from './RoleEdit';
 import RolePermissionList from './RolePermissionList';
+
 const { Col } = Grid;
 export default class RoleList extends Component {
   static displayName = 'RoleList';
@@ -22,7 +24,7 @@ export default class RoleList extends Component {
   /**
    * 选择验证
    */
-  chooseAndShow = (dialog) => {
+  checkAndShow = (dialog) => {
     const selectRecrod = this.refs.tableList.getSelectRecords();
     if (selectRecrod.length == 1) {
       dialog.show();
@@ -41,6 +43,25 @@ export default class RoleList extends Component {
       this.refs.tableList.refresh();
     });
   }
+  /**
+   * 渲染操作列
+   */
+  renderOper = (value, index, record) => {
+    return (
+      <div className="col-operation">
+        <Permission code="roles:modify">
+          <Button shape="text" size="small" onClick={() => this.refs.editDialog.show()}>
+            修改
+          </Button>
+        </Permission>
+        <Permission code="roles:permissions:list">
+          <Button shape="text" size="small" onClick={() => this.refs.choosePermissionsDialog.show()}>
+            权限设置
+          </Button>
+        </Permission>
+      </div>
+    );
+  };
 
   render() {
     return (
@@ -49,7 +70,7 @@ export default class RoleList extends Component {
         <TableList ref="tableList" api='/sys/roles' title="角色列表" defaultFilterParam={this.defaultFilterParam}>
           {/* 筛选开始 */}
           <div key="filters">
-            <Col xxs="24" l="8">
+            <Col xxs="24" m="12" l="8" >
               <span>角色名称:</span>
               <FormBinder name="name">
                 <Input />
@@ -60,28 +81,16 @@ export default class RoleList extends Component {
 
           {/* 操作开始 */}
           <div key="operations">
-            <Col l="12">
-              <Permission code="roles:add">
-                <Button type="primary" onClick={() => this.refs.addDialog.show()}>
-                  <Icon type="add" size="xs" />添加
+            <Permission code="roles:add">
+              <Button type="primary" onClick={() => this.refs.addDialog.show()}>
+                <Icon type="add" size="xs" />添加
                 </Button>
-              </Permission>
-              <Permission code="roles:modify">
-                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.editDialog)}>
-                  <Icon type="edit" size="xs" />编辑
-                 </Button>
-              </Permission>
-              <Permission code="roles:delete">
-                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.deleteDialog)}>
-                  <Icon type="close" size="xs" />删除
+            </Permission>
+            <Permission code="roles:delete">
+              <Button type="primary" onClick={() => this.checkAndShow(this.refs.deleteDialog)}>
+                <Icon type="close" size="xs" />删除
                 </Button>
-              </Permission>
-              <Permission code="roles:permissions:list">
-                <Button type="primary" onClick={() => this.chooseAndShow(this.refs.choosePermissionsDialog)}>
-                  <Icon type="set" size="xs" />选择权限
-                </Button>
-              </Permission>
-            </Col>
+            </Permission>
           </div>
           {/* 操作结束 */}
 
@@ -89,6 +98,7 @@ export default class RoleList extends Component {
           <div key="tables">
             <Table.Column title="角色名称" dataIndex="name" />
             <Table.Column title="创建时间" dataIndex="createDate" />
+            <Table.Column title="操作" cell={this.renderOper} />
           </div>
           {/* 列表结束 */}
         </TableList>

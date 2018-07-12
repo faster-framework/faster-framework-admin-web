@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Grid, Form, Button } from '@icedesign/base';
+import { Input, Grid, Form, Button, Feedback } from '@icedesign/base';
 import { http } from '@utils';
 import {
     FormBinderWrapper,
@@ -42,6 +42,7 @@ export default class UserAdd extends Component {
                 return false;
             }
             http.put(`/sys/users/${this.state.values.id}/password/change`, this.state.values).then(() => {
+                Feedback.toast.success('密码修改成功');
                 this.props.pwdModifyDialog.hide();
                 this.props.tableList.refresh();
             });
@@ -80,13 +81,13 @@ export default class UserAdd extends Component {
                             <FormBinder
                                 name="ip"
                                 rules={[
-                                {
-                                    required: true,
-                                    message: '请确认密码',
-                                },
-                                {
-                                    validator: this.checkPass2.bind(this)
-                                }]}
+                                    {
+                                        required: true,
+                                        message: '请确认密码',
+                                    },
+                                    {
+                                        validator: this.checkPass2.bind(this)
+                                    }]}
                             >
                                 <Input htmlType="password" placeholder="请确认密码" />
                             </FormBinder>
@@ -95,7 +96,7 @@ export default class UserAdd extends Component {
                     </Row>
                     <Row wrap>
                         <Col style={{ textAlign: "center" }}>
-                            <Button type="primary"  style={formItemLayout.style} onClick={this.save}>保存</Button>
+                            <Button type="primary" style={formItemLayout.style} onClick={this.save}>保存</Button>
                             <Button onClick={() => this.props.pwdModifyDialog.hide()}>取消</Button>
                         </Col>
                     </Row>

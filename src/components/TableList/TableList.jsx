@@ -80,7 +80,7 @@ export default class TableList extends Component {
         this.setState({
             tableProps: Object.assign({}, this.state.tableProps, { openRowKeys: existRowsKey })
         });
-        this.onSelect(true,currentRecord,this.state.selectRecords);
+        this.onSelect(true, currentRecord, this.state.selectRecords);
     }
     /**
      * 刷新表格

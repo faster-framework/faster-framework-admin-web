@@ -378,3 +378,10 @@ body {
 .next-select{
   width: 100%
 }
+.col-operation{
+  margin-left: -5px;
+  Button{
+    margin: 5px !important;
+    white-space: nowrap
+  }
+}
