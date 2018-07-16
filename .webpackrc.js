@@ -3,10 +3,12 @@ module.exports = {
     resolve: {
         alias: {
             '@': resolve('src'),
-            '@pages': resolve('src/pages'),
-            '@utils': resolve('src/utils'),
-            '@redux': resolve('src/redux'),
-            '@components': resolve('src/components')
+            '@common': resolve('src/common'),
+            '@layouts': resolve('src/common/layouts'),
+            '@modules': resolve('src/modules'),
+            '@utils': resolve('src/common/utils'),
+            '@redux': resolve('src/common/redux'),
+            '@components': resolve('src/common/components')
         }
     }
 };

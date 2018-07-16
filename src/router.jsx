@@ -2,8 +2,8 @@
  * 定义应用路
  */
 import { HashRouter as Router } from 'react-router-dom';
-import BodyLayout from './layouts/bodyLayout';
-import { Switch, Route, hashHistory } from 'react-router';
+import BodyLayout from '@layouts/bodyLayout';
+import { Switch, Route } from 'react-router';
 import React from 'react';
 import routerConfig from './routerConfig';
 /**
