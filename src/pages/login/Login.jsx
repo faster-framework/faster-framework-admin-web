@@ -12,6 +12,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as userActions from '@redux/actions/userActions'
 import cookie from 'react-cookies';
+import CryptoJS from 'crypto-js';
+
+
+
 const { Row, Col } = Grid;
 
 @connect(state => state, (dispatch) => {
@@ -32,17 +36,55 @@ export default class UserLogin extends Component {
       value: {
         account: '',
         password: '',
+        captcha: '',
+        captchaToken: '',
         checkbox: false
+      },
+      captcha: {
+        img: '',
+        token: ''
       }
     };
   };
 
-
+  componentWillMount() {
+    if (cookie.load('account') && cookie.load('password')) {
+      let userRem = Object.assign(this.state.value, {checkbox: true, account: cookie.load('account'), password: cookie.load('password')})
+      this.setState({value: userRem})
+    }
+    this.capRefresh()
+  };
   formChange = (value) => {
     this.setState({
       value,
     });
   };
+
+  pwd2AES = (pwd) => {
+    let key = 'ZmFzdGVyLWZyYW1ld29yaw=='
+    let AESpwd = CryptoJS.AES.encrypt(pwd, key)
+    return AESpwd
+  };
+
+  pwdRemember = (checked) => {
+    if (!checked) {
+      if (cookie.load('account')) {
+        cookie.remove('account')
+      }
+      if (cookie.load('password')) {
+        cookie.remove('password')
+      }
+    }
+  };
+
+  capRefresh = () => {
+    http.get('/captcha').then(res => {
+      let capData = Object.assign({}, this.state.captcha, res.data)
+      let checkData = Object.assign({}, this.state.value, {captchaToken: res.data.token})
+      this.setState({captcha: capData})
+      this.setState({value: checkData})
+    })
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -52,6 +94,16 @@ export default class UserLogin extends Component {
       }
       // 使用 axios 获取数据
       http.post('/login', values).then(response => {
+        if (values.checkbox) {
+          cookie.save('account', values.account, {
+            maxAge: 60 * 60 * 24 * 30
+          })
+          let pwd = this.pwd2AES(values.password).toString()
+          console.log(pwd)
+          cookie.save('password', pwd, {
+            maxAge: 60 * 60 * 24 * 30
+          })
+        }
         const body = response.data;
         //存储token到cookie中
         //todo: 增加自动登录，当为自动登录时，才存储cookie
@@ -110,11 +162,28 @@ export default class UserLogin extends Component {
                   <IceFormError name="password" />
                 </Col>
               </Row>
+              <Row className="formItem formColItem">
+                <Col className="formItemCol formCaptchaCol" span="18">
+                  <IceIcon type="lock" size="small" className="inputIcon" />
+                  <IceFormBinder name="captcha" required message="请输入验证码">
+                    <Input
+                      size="large"
+                      placeholder="验证码"
+                    />
+                  </IceFormBinder>
+                </Col>
+                <Col className="formItemCol formCaptchaCol formCaptchaImg" span="6">
+                  <img onClick={this.capRefresh} src={this.state.captcha.img} />
+                </Col>
+                <Col>
+                  <IceFormError name="captcha" />
+                </Col>
+              </Row>
 
               <Row className="formItem">
                 <Col>
                   <IceFormBinder name="checkbox">
-                    <Checkbox className="checkbox">记住账号</Checkbox>
+                    <Checkbox onChange={this.pwdRemember} checked={this.state.value.checkbox} className="checkbox">记住账号</Checkbox>
                   </IceFormBinder>
                 </Col>
               </Row>
