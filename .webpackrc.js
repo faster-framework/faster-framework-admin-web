@@ -1,8 +1,19 @@
 const { resolve } = require('path');
-module.exports = {
+const webpack = require('webpack');
+
+let envConfig = {};
+console.info(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'production') {
+    envConfig = require('./config/.webpackrc.prod.js')
+} else {
+    envConfig = require('./config/.webpackrc.dev.js')
+}
+
+const commonConfig = {
     resolve: {
         alias: {
             '@': resolve('src'),
+            '@mock': resolve('mock'),
             '@common': resolve('src/common'),
             '@layouts': resolve('src/common/layouts'),
             '@modules': resolve('src/modules'),
@@ -12,3 +23,6 @@ module.exports = {
         }
     }
 };
+
+
+module.exports = Object.assign({}, commonConfig, envConfig);

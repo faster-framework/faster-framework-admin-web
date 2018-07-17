@@ -31,7 +31,7 @@ const theme = typeof THEME === 'undefined' ? 'light' : THEME;
     tabCreator: bindActionCreators(tabActions, dispatch)
   }
 })
-export default class HeaderAsideFooterResponsiveLayout extends Component {
+export default class BodyLayout extends Component {
 
   static propTypes = {};
 

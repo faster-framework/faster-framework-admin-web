@@ -55,10 +55,5 @@
     "theme": "@icedesign/skin",
     "entry": "src/index.js"
   },
-  "scaffoldConfig": {
-    "name": "ice-design-cms",
-    "title": "ICE Design CMS",
-    "screenshot": "https://img.alicdn.com/tfs/TB1ai53mqmWBuNjy1XaXXXCbXXa-1920-1080.png"
-  },
   "title": "faster-framework-admin-web"
 }
