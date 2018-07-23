@@ -2,14 +2,17 @@
 // headerMenuConfig：头部导航配置
 // asideMenuConfig：侧边导航配置
 
-const headerMenuConfig = [
-  
-];
+const headerMenuConfig = [];
 
 const asideMenuConfig = [
   {
     name: '我的工作台',
     path: '/',
+    icon: 'home',
+  },
+  {
+    name: 'demo',
+    path: '/demo',
     icon: 'home',
   },
   {
@@ -29,7 +32,7 @@ const recursiveMenu = [];
  * 递归处理子类path，继承父类path，返回扁平列表
  */
 function recursiveMenuConfig(config = [], parent) {
-  config.forEach((item) => {
+  config.forEach(item => {
     if (parent) {
       item.path = parent.path + item.path;
     }
@@ -39,7 +42,7 @@ function recursiveMenuConfig(config = [], parent) {
     const recuriveItem = {
       name: item.name,
       path: item.path,
-    }
+    };
     recursiveMenu.push(recuriveItem);
   });
 }

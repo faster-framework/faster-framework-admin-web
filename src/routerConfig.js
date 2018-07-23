@@ -10,6 +10,7 @@ import NotFound from '@modules/notFound';
 import Login from '@modules/login';
 import RoleList from '@modules/system/role';
 import PermissionList from '@modules/system/permission';
+import DemoList from '@modules/demo';
 
 const routerConfig = [
   {
@@ -23,15 +24,19 @@ const routerConfig = [
   },
   {
     path: '/sys/user',
-    component: UserList
+    component: UserList,
   },
   {
     path: '/sys/role',
-    component: RoleList
+    component: RoleList,
   },
   {
     path: '/sys/permission',
-    component: PermissionList
+    component: PermissionList,
+  },
+  {
+    path: '/demo',
+    component: DemoList,
   },
   {
     path: '*',

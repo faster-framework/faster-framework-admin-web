@@ -7,8 +7,9 @@ export default class BaseDialog extends Component {
   constructor(props) {
     super(props);
     this.state = this.props;
-    const style = Object.assign({}, this.state.style, { minWidth: '320px' });
+    const style = Object.assign({}, this.state.style, { overflow: 'auto' });
     this.state = Object.assign({}, this.state, { style: style });
+
   }
 
   hide = () => {
