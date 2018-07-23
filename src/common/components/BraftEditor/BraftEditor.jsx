@@ -21,14 +21,14 @@ export default class CustomBraftEditor extends Component {
     };
     render() {
         const editorProps = {
-            height: 500,
+            height: 300,
             contentFormat: 'html',
             initialContent: this.state.content,
             onChange: this.handleChange
         };
 
         return (
-            <BraftEditor {...editorProps} ref={instance => this.editorInstance = instance} />
+            <BraftEditor {...Object.assign({}, editorProps, this.props)} ref={instance => this.editorInstance = instance} />
         );
     }
 }
