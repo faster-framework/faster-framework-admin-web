@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import BraftEditor from 'braft-editor';
+import { http } from '@utils';
 import 'braft-editor/dist/braft.css';
 
-export default class CustomBraftEditor extends Component {
-    static displayName = 'CustomBraftEditor';
+export default class BaseBraftEditor extends Component {
+    static displayName = 'BaseBraftEditor';
     constructor(props) {
         super(props);
         this.state = {};
@@ -19,12 +20,28 @@ export default class CustomBraftEditor extends Component {
         const content = this.editorInstance.getContent();
         return !(content && content != '<p></p>')
     };
+    uploadFn = (param) => {
+        const formData = new FormData();
+        formData.append('file', param.file)
+        const config = {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        }
+        http.post("/upload", formData, config)
+            .then(response => {
+                param.success({
+                    url: response.data.url
+                })
+            })
+    }
     render() {
         const editorProps = {
             height: 300,
             contentFormat: 'html',
             initialContent: this.state.content,
-            onChange: this.handleChange
+            onChange: this.handleChange,
+            media: {
+                uploadFn: this.uploadFn
+            }
         };
 
         return (

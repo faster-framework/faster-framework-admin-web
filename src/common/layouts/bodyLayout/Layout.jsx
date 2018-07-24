@@ -214,7 +214,7 @@ export default class BodyLayout extends Component {
             )}
             {this.state.isScreen === 'isMobile' && <Logo />}
             <Menu
-              style={{ width: this.state.collapse ? 60 : 200 }}
+              style={{ width: this.state.collapse ? 60 : 150 }}
               inlineCollapsed={this.state.collapse}
               mode="inline"
               selectedKeys={[pathname]}
