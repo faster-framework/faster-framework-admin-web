@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BraftEditor from 'braft-editor';
-import { http } from '@utils';
+import { http, imgUtils } from '@utils';
 import 'braft-editor/dist/braft.css';
 
 export default class BaseBraftEditor extends Component {
@@ -26,7 +26,7 @@ export default class BaseBraftEditor extends Component {
         const config = {
             headers: { 'Content-Type': 'multipart/form-data' }
         }
-        http.post("/upload", formData, config)
+        http.post(imgUtils.uploadImgUrl, formData, config)
             .then(response => {
                 param.success({
                     url: response.data.url

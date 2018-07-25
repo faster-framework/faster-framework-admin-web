@@ -1,6 +1,4 @@
 const { resolve } = require('path');
-const webpack = require('webpack');
-
 let envConfig = {};
 if (process.env.NODE_ENV === 'production') {
     envConfig = require('./config/.webpackrc.prod.js')

@@ -1,8 +1,9 @@
 import cookie from 'react-cookies';
 
+export const uploadImgUrl = "/upload";
 export const initProperties = {
     listType: "picture-card",
-    action: serverUrl + "/upload",
+    action: serverUrl + uploadImgUrl,
     headers: {
         'Authorization': cookie.load('token')
     },
