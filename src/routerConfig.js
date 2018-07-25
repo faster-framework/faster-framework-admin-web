@@ -2,46 +2,38 @@
 // 你可以调整 routerConfig 里的内容
 // 变量名 routerConfig 为 iceworks 检测关键字，请不要修改名称
 
-import BlankLayout from '@layouts/blankLayout';
-import LoginLayout from '@modules/login/layout';
-import Dashboard from '@modules/dashborad';
-import UserList from '@modules/system/user';
-import NotFound from '@modules/notFound';
-import Login from '@modules/login';
-import RoleList from '@modules/system/role';
-import PermissionList from '@modules/system/permission';
-import DemoList from '@modules/demo';
+import asyncComponent from '@components/AsyncComponent'
 
 const routerConfig = [
   {
     path: '/login',
-    layout: LoginLayout,
-    component: Login,
+    layout: asyncComponent(()=>import('@modules/login/layout')),
+    component: asyncComponent(()=>import('@modules/login')),
   },
   {
     path: '/',
-    component: Dashboard,
+    component: asyncComponent(()=>import('@modules/dashborad')),
   },
   {
     path: '/sys/user',
-    component: UserList,
+    component: asyncComponent(()=>import('@modules/system/user')),
   },
   {
     path: '/sys/role',
-    component: RoleList,
+    component: asyncComponent(()=>import('@modules/system/role')),
   },
   {
     path: '/sys/permission',
-    component: PermissionList,
+    component: asyncComponent(()=>import('@modules/system/permission')),
   },
   {
     path: '/demo',
-    component: DemoList,
+    component: asyncComponent(()=>import('@modules/demo')),
   },
   {
     path: '*',
-    layout: BlankLayout,
-    component: NotFound,
+    layout: asyncComponent(()=>import('@layouts/blankLayout')),
+    component: asyncComponent(()=>import('@modules/notFound')),
   },
 ];
 

@@ -2,7 +2,6 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 
 let envConfig = {};
-console.info(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
     envConfig = require('./config/.webpackrc.prod.js')
 } else {
@@ -23,6 +22,4 @@ const commonConfig = {
         }
     }
 };
-
-
 module.exports = Object.assign({}, commonConfig, envConfig);

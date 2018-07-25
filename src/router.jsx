@@ -1,11 +1,14 @@
 /**
  * 定义应用路
  */
+import asyncComponent from '@components/AsyncComponent'
 import { HashRouter as Router } from 'react-router-dom';
-import BodyLayout from '@layouts/bodyLayout';
 import { Switch, Route } from 'react-router';
 import React from 'react';
 import routerConfig from './routerConfig';
+
+
+
 /**
  * 将路由信息扁平化，继承上一级路由的 path
  * @param {Array} config 路由配置
@@ -15,7 +18,7 @@ function recursiveRouterConfigV4(config = []) {
   config.forEach((item) => {
     const route = {
       path: item.path,
-      layout: item.layout ? item.layout : BodyLayout,
+      layout: item.layout ? item.layout : asyncComponent(()=>import('@layouts/bodyLayout')),
       component: item.component,
     };
     if (Array.isArray(item.children)) {

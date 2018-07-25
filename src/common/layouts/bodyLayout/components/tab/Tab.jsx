@@ -1,4 +1,5 @@
 import { Tab } from "@icedesign/base";
+import React from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
