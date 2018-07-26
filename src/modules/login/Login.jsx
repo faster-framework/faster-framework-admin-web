@@ -57,7 +57,13 @@ export default class UserLogin extends Component {
       let userRem = Object.assign(this.state.value, { checkbox: true, account: account, password: passwordPlain })
       this.setState({ value: userRem })
     }
-    this.capRefresh()
+    this.capRefresh();
+    const slef = this;
+    window.addEventListener('keypress',function(e){
+      if(e.which == 13){
+        slef.handleSubmit(e);
+      }       
+    })
   };
   formChange = (value) => {
     this.setState({
@@ -90,7 +96,7 @@ export default class UserLogin extends Component {
       this.setState({ value: checkData })
     })
   }
-
+  
   handleSubmit = (e) => {
     e.preventDefault();
     this.refs.form.validateAll((errors, values) => {
