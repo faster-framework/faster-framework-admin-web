@@ -32,6 +32,7 @@ export default class UserLogin extends Component {
 
   constructor(props) {
     super(props);
+    this.secretKey = "ZmFzdGVyLWZyYW1ld29yaw==";
     this.state = {
       value: {
         account: '',
@@ -48,9 +49,13 @@ export default class UserLogin extends Component {
   };
 
   componentWillMount() {
-    if (cookie.load('account') && cookie.load('password')) {
-      let userRem = Object.assign(this.state.value, {checkbox: true, account: cookie.load('account'), password: cookie.load('password')})
-      this.setState({value: userRem})
+    const password = cookie.load('password');
+    const account = cookie.load('account');
+    if (account && password) {
+      var secretPwd = CryptoJS.AES.decrypt(password, this.secretKey);
+      var passwordPlain = secretPwd.toString(CryptoJS.enc.Utf8);
+      let userRem = Object.assign(this.state.value, { checkbox: true, account: account, password: passwordPlain })
+      this.setState({ value: userRem })
     }
     this.capRefresh()
   };
@@ -61,8 +66,8 @@ export default class UserLogin extends Component {
   };
 
   pwd2AES = (pwd) => {
-    let key = 'ZmFzdGVyLWZyYW1ld29yaw=='
-    let AESpwd = CryptoJS.AES.encrypt(pwd, key)
+    let key = this.secretKey;
+    let AESpwd = CryptoJS.AES.encrypt(pwd, key);
     return AESpwd
   };
 
@@ -80,9 +85,9 @@ export default class UserLogin extends Component {
   capRefresh = () => {
     http.get('/captcha').then(res => {
       let capData = Object.assign({}, this.state.captcha, res.data)
-      let checkData = Object.assign({}, this.state.value, {captchaToken: res.data.token})
-      this.setState({captcha: capData})
-      this.setState({value: checkData})
+      let checkData = Object.assign({}, this.state.value, { captchaToken: res.data.token })
+      this.setState({ captcha: capData })
+      this.setState({ value: checkData })
     })
   }
 
@@ -99,7 +104,6 @@ export default class UserLogin extends Component {
             maxAge: 60 * 60 * 24 * 30
           })
           let pwd = this.pwd2AES(values.password).toString()
-          console.log(pwd)
           cookie.save('password', pwd, {
             maxAge: 60 * 60 * 24 * 30
           })
@@ -163,7 +167,7 @@ export default class UserLogin extends Component {
                 </Col>
               </Row>
               <Row className="formItem formColItem">
-                <Col className="formItemCol formCaptchaCol" span="18">
+                <Col className="formItemCol formCaptchaCol" span="17">
                   <IceIcon type="lock" size="small" className="inputIcon" />
                   <IceFormBinder name="captcha" required message="请输入验证码">
                     <Input
@@ -172,14 +176,15 @@ export default class UserLogin extends Component {
                     />
                   </IceFormBinder>
                 </Col>
-                <Col className="formItemCol formCaptchaCol formCaptchaImg" span="6">
+                <Col className="formItemCol formCaptchaCol formCaptchaImg" span="6" offset="1">
                   <img onClick={this.capRefresh} src={this.state.captcha.img} />
                 </Col>
-                <Col>
-                  <IceFormError name="captcha" />
-                </Col>
+
               </Row>
 
+              <Row className="formItem formColItem" style={{ marginTop: '-25px' }}>
+                <IceFormError name="captcha" />
+              </Row>
               <Row className="formItem">
                 <Col>
                   <IceFormBinder name="checkbox">

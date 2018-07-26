@@ -31,7 +31,7 @@ httpUtil.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
     store.dispatch(loadingActions.hide());
-    if (error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
         location.replace("#/login");
         return Promise.reject(error);
     }

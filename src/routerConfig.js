@@ -33,7 +33,7 @@ const routerConfig = [
   {
     path: '*',
     layout: asyncComponent(()=>import('@layouts/blankLayout')),
-    component: asyncComponent(()=>import('@modules/notFound')),
+    component: asyncComponent(()=>import('@components/notFound')),
   },
 ];
 
