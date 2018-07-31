@@ -5,7 +5,7 @@ import Menu from '@icedesign/menu';
 import FoundationSymbol from 'foundation-symbol';
 import cx from 'classnames';
 import { Link } from 'react-router-dom';
-import { headerMenuConfig } from '@/menuConfig';
+import { headerMenuConfig } from '@common/menuConfig';
 import Logo from './Logo';
 import cookie from 'react-cookies';
 import { http } from '@utils';

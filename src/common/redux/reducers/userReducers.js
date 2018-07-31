@@ -1,4 +1,4 @@
-import { asideMenuConfig } from '@/menuConfig';
+import { asideMenuConfig } from '@common/menuConfig';
 import { hasPermissionFilter } from '@utils/permissions'
 
 const userInfo = {

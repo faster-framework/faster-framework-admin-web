@@ -5,7 +5,7 @@ import asyncComponent from '@components/AsyncComponent'
 import { HashRouter as Router } from 'react-router-dom';
 import { Switch, Route } from 'react-router';
 import React from 'react';
-import routerConfig from './routerConfig';
+import routerConfig from '@common/routerConfig';
 
 
 

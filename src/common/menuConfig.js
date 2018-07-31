@@ -1,18 +1,14 @@
 // 菜单配置
 // headerMenuConfig：头部导航配置
 // asideMenuConfig：侧边导航配置
+import asideMenuConfig from '@modules/menuConfig';
 
 const headerMenuConfig = [];
 
-const asideMenuConfig = [
+const defaultMenuConfig = [
   {
     name: '我的工作台',
     path: '/',
-    icon: 'home',
-  },
-  {
-    name: 'demo',
-    path: '/demo',
     icon: 'home',
   },
   {
@@ -26,6 +22,8 @@ const asideMenuConfig = [
     ],
   },
 ];
+asideMenuConfig.splice(0,0,defaultMenuConfig[0])
+asideMenuConfig.push(defaultMenuConfig[1])
 
 const recursiveMenu = [];
 /**

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as tabActions from '@redux/actions/tabActions';
-import { recursiveMenu } from "@/menuConfig";
+import { recursiveMenu } from "@common/menuConfig";
 const TabPane = Tab.TabPane;
 
 @withRouter
