@@ -10,7 +10,6 @@ const commonConfig = {
     resolve: {
         alias: {
             '@': resolve('src'),
-            '@mock': resolve('mock'),
             '@common': resolve('src/common'),
             '@layouts': resolve('src/common/layouts'),
             '@modules': resolve('src/modules'),
