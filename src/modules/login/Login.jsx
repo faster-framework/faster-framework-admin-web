@@ -58,10 +58,10 @@ export default class UserLogin extends Component {
       this.setState({ value: userRem })
     }
     this.capRefresh();
-    const slef = this;
+    const self = this;
     window.addEventListener('keypress',function(e){
       if(e.which == 13){
-        slef.handleSubmit(e);
+        self.handleSubmit();
       }       
     })
   };
@@ -97,8 +97,7 @@ export default class UserLogin extends Component {
     })
   }
   
-  handleSubmit = (e) => {
-    e.preventDefault();
+  handleSubmit = () => {
     this.refs.form.validateAll((errors, values) => {
       if (errors) {
         return;
