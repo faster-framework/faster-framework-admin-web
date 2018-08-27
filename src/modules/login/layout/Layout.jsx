@@ -25,7 +25,7 @@ export default class LoginLayout extends Component {
         <div className="header">
             <img
               className="logo"
-              src="https://img.alicdn.com/tfs/TB13UQpnYGYBuNjy0FoXXciBFXa-242-134.png"
+              src={require('@/logo.png')}
               alt="logo"
             />
             <span className="title">Faster-Admin</span>

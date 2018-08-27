@@ -2,11 +2,9 @@
 
 .user-layout {
   .header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
   .title {
@@ -15,11 +13,14 @@
     color: rgba(0, 0, 0, 0.85);
     font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     font-weight: 600;
+    margin-top:10px;
   }
 
   .logo {
-    margin-right: 10px;
     width: 48px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
   }
   .formContainer {
     display: flex;

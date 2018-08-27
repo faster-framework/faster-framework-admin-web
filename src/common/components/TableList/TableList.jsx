@@ -43,7 +43,7 @@ export default class TableList extends Component {
             pageParam: {
                 pageSize: 10,
                 pageNum: 1,
-                pages: 0,
+                total: 0,
             },
             list: [],
             selectRecords: [],
@@ -57,6 +57,7 @@ export default class TableList extends Component {
             title: this.props.title,
 
         };
+        this.renderData = this.props.renderData;
         this.loadData();
     }
     initSelectKeys = (keys) => {
@@ -151,10 +152,14 @@ export default class TableList extends Component {
     loadData = (pageNum = this.state.pageParam.pageNum, pageSize = this.state.pageParam.pageSize) => {
         const isTree = this.state.tableProps.isTree;
         const pageReq = isTree ? {} : { pageNum: pageNum, pageSize: pageSize };
+        const self = this;
         //获取用户列表数据
         http.get(this.state.api, {
             params: Object.assign({}, this.state.filterParam, pageReq)
         }).then(response => {
+            if(self.renderData){
+                response.data = self.renderData(response.data);
+            }
             const resultData = response.data;
             if (isTree) {
                 this.setState({
@@ -164,7 +169,7 @@ export default class TableList extends Component {
                 this.setState({
                     list: resultData.list,
                     pageParam: Object.assign({}, this.state.pageParam, {
-                        pages: Number(resultData.pages)
+                        total: Number(resultData.total)
                     })
                 });
             }
@@ -248,7 +253,7 @@ export default class TableList extends Component {
                             className="pagination"
                             pageSizeSelector="dropdown"
                             pageSizeList={[10, 20, 50]}
-                            total={this.state.pageParam.pages}
+                            total={this.state.pageParam.total}
                             pageSize={this.state.pageParam.pageSize}
                             onChange={this.onPageNumChange}
                             onPageSizeChange={this.onPageSizeChange}
