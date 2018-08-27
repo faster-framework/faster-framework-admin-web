@@ -28,7 +28,8 @@ export default class LoginLayout extends Component {
               src={require('@/logo.png')}
               alt="logo"
             />
-            <span className="title">Faster-Admin</span>
+            
+            <span className="title" dangerouslySetInnerHTML={{ __html: projectTitle}}></span>
         </div>
         {this.props.children}
       </Layout>

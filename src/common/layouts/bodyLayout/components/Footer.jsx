@@ -18,8 +18,7 @@ export default class Footer extends PureComponent {
           <div style={{ filter: 'grayscale(100%)', opacity: 0.3 }}>
             <Logo />
           </div>
-          <div className="copyright">
-            © Faster-Admin
+          <div className="copyright" dangerouslySetInnerHTML={{ __html: '© ' + projectTitle }}>
           </div>
         </div>
       </Layout.Footer>
