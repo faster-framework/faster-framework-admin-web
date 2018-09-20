@@ -11,7 +11,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <h1>
-        欢迎你，大兄弟。
+        欢迎登录后台管理系统。
       </h1>
     );
   }

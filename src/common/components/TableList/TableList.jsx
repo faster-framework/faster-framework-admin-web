@@ -41,8 +41,8 @@ export default class TableList extends Component {
         this.state = {
             filterParam: this.props.defaultFilterParam,
             pageParam: {
-                pageSize: 10,
-                pageNum: 1,
+                size: 10,
+                current: 1,
                 total: 0,
             },
             list: [],
@@ -149,9 +149,9 @@ export default class TableList extends Component {
      * 加载数据
      * 
      */
-    loadData = (pageNum = this.state.pageParam.pageNum, pageSize = this.state.pageParam.pageSize) => {
+    loadData = (current = this.state.pageParam.current, size = this.state.pageParam.size) => {
         const isTree = this.state.tableProps.isTree;
-        const pageReq = isTree ? {} : { pageNum: pageNum, pageSize: pageSize };
+        const pageReq = isTree ? {} : { current: current, size: size };
         const self = this;
         //获取用户列表数据
         http.get(this.state.api, {
@@ -167,7 +167,7 @@ export default class TableList extends Component {
                 });
             } else {
                 this.setState({
-                    list: resultData.list,
+                    list: resultData.records,
                     pageParam: Object.assign({}, this.state.pageParam, {
                         total: Number(resultData.total)
                     })
@@ -179,24 +179,24 @@ export default class TableList extends Component {
     /**
      * 当页码改变时
      */
-    onPageNumChange = (pageNum) => {
+    onPageNumChange = (current) => {
         this.setState(
             {
-                pageParam: Object.assign({}, this.state.pageParam, { pageNum: pageNum }),
+                pageParam: Object.assign({}, this.state.pageParam, { current: current }),
             }
         );
-        this.loadData(pageNum);
+        this.loadData(current);
     }
     /**
      * 当每页数量改变时
      */
-    onPageSizeChange = (pageSize) => {
+    onPageSizeChange = (size) => {
         this.setState(
             {
-                pageParam: Object.assign({}, this.state.pageParam, { pageNum: 1, pageSize: pageSize }),
+                pageParam: Object.assign({}, this.state.pageParam, { current: 1, size: size }),
             }
         );
-        this.loadData(1, pageSize);
+        this.loadData(1, size);
     }
 
     /**
@@ -254,7 +254,7 @@ export default class TableList extends Component {
                             pageSizeSelector="dropdown"
                             pageSizeList={[10, 20, 50]}
                             total={this.state.pageParam.total}
-                            pageSize={this.state.pageParam.pageSize}
+                            pageSize={this.state.pageParam.size}
                             onChange={this.onPageNumChange}
                             onPageSizeChange={this.onPageSizeChange}
                         />)
