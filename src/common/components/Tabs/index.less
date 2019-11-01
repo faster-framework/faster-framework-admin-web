@@ -1,0 +1,90 @@
+:global {
+  .ant-pro-sider-menu{
+    margin-top: -16px;
+  }
+  .header-tab {
+    margin-top  : -24px;
+    margin-left : -24px;
+    margin-right: -24px;
+    .ant-tabs-top-bar {
+      background   : white;
+      margin-bottom: 10px;
+      padding-left : 24px;
+      padding-right: 24px;
+    }
+
+    .ant-tabs-tabpane {
+      padding-left : 16px;
+      padding-right: 16px;
+    }
+
+    .ant-tabs-tab {
+      padding: 0;
+      color  : rgba(0, 0, 0, 0.45) !important;
+    }
+
+    .ant-tabs-tab:hover {
+      color: #1890FF !important;
+    }
+
+    .ant-tabs-tab-active {
+      color: #1890FF !important;
+    }
+  }
+
+  .tab-popover {
+    top : 95px !important;
+    .ant-popover-content {
+      margin-left: 40px;
+      .ant-popover-arrow {
+        display: none !important;
+      }
+    }
+
+    .ant-popover-inner-content {
+      padding: 5px 0px !important;
+
+      .tab-popover-content {
+        display       : flex;
+        flex-direction: column;
+        font-size     : 12px;
+
+        .item:not(:first-child) {
+          margin-top: 2px;
+        }
+
+        .item {
+          padding: 5px 16px;
+        }
+
+        .item:hover {
+          background: #f3f3f3;
+          cursor    : pointer;
+        }
+      }
+    }
+
+  }
+}
+
+.tabNameNoClose {
+  margin-right: 8px;
+}
+
+.tabName {
+  user-select : none;
+  padding     : 12px 10px;
+  padding-left: 20px;
+
+  .icon {
+    width      : 15px;
+    height     : 15px;
+    font-size  : 13px;
+    font-weight: 100;
+    margin-left: 8px;
+  }
+
+  .icon:hover {
+    color: rgb(2, 107, 206);
+  }
+}

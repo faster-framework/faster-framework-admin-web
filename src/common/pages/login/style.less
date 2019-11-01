@@ -1,0 +1,77 @@
+@import '~antd/es/style/themes/default.less';
+
+.ant-input-suffix {
+  right: 0px !important;
+}
+
+.main {
+  width : 368px;
+  margin: 0 auto;
+
+  @media screen and (max-width: @screen-sm) {
+    width: 95%;
+  }
+
+  .icon {
+    margin-left   : 16px;
+    color         : rgba(0, 0, 0, 0.2);
+    font-size     : 24px;
+    vertical-align: middle;
+    cursor        : pointer;
+    transition    : color 0.3s;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
+  :global {
+    .antd-pro-login-submit {
+      width     : 100%;
+      margin-top: 24px;
+    }
+
+    .ant-form-item {
+      margin: 0 2px 24px;
+    }
+  }
+
+  .submit {
+    width     : 100%;
+    margin-top: 24px;
+  }
+
+  .prefixIcon {
+    color    : @disabled-color;
+    font-size: @font-size-base;
+  }
+
+  input {
+    font-size: 14px;
+  }
+
+
+  .captchaContainer {
+    margin-bottom: 0px;
+    .captchaInput {
+      max-width: 70%;
+    }
+
+    img {
+      display    : inline;
+      cursor     : pointer;
+      height     : 38px;
+      min-width  : 28%;
+      box-sizing : border-box;
+      margin     : 0;
+      padding    : 0;
+      margin-left: 2%;
+      margin-top : -4px;
+    }
+  }
+  .rememberContainer{
+    margin-left: 3px;
+    margin-bottom: 0px;
+  }
+
+}
