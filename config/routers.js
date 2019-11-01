@@ -1,3 +1,5 @@
+import modules from './router-modules';
+
 const routes = [
   {
     path: '/',
@@ -60,6 +62,7 @@ const routes = [
       }
     ]
   },
+  ...modules,
   {
     component: '../common/pages/404'
   }

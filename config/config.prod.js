@@ -1,5 +1,5 @@
 export default {
   define: {
-    BASE_API:'http://www.qq.com'
+    BASE_API:'http://127.0.0.1:8080'
   }
 };
