@@ -3,7 +3,7 @@ import { Input, Form, message } from 'antd';
 import FixedRow from '@/common/components/FixedRow';
 import request from '@/common/utils/request';
 
-class RoleAdd extends Component {
+class RoleEdit extends Component {
   constructor(props) {
     super(props)
     request.get('/sys/roles/' + this.props.currentRecord.id).then(res => {
@@ -39,4 +39,4 @@ class RoleAdd extends Component {
     );
   }
 }
-export default Form.create()(RoleAdd);
+export default Form.create()(RoleEdit);

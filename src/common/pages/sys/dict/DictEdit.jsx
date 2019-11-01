@@ -3,7 +3,7 @@ import { Input, Form, message } from 'antd';
 import FixedRow from '@/common/components/FixedRow';
 import request from '@/common/utils/request';
 
-class DictAdd extends Component {
+class DictEdit extends Component {
   constructor(props) {
     super(props)
     request.get('/sys/dict/' + this.props.currentRecord.id).then(res => {
@@ -61,4 +61,4 @@ class DictAdd extends Component {
     );
   }
 }
-export default Form.create()(DictAdd);
+export default Form.create()(DictEdit);
