@@ -35,8 +35,8 @@ const errorHandler = function (err) {
   });
   if (response) {
     if (response.status === 401) {
-      if(response.data && response.data.code==1006){
-        message.error(response.data.message);
+      if(err.data && err.data.code==1006){
+        message.error(err.data.message);
         throw err;
       }
       window.localStorage.removeItem("token");
