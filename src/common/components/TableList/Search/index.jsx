@@ -32,6 +32,16 @@ class Search extends Component {
   };
   render() {
     const count = this.state.expand ? React.Children.count(this.props.children) : 4;
+    let expandBtDisplay = 'none';
+    if(this.props.children){
+      if(this.state.expand == false && this.props.children.length>count){
+        expandBtDisplay = '';
+      }
+      if(this.state.expand && this.props.children.length>=count){
+        expandBtDisplay = '';
+      }
+    }
+
     const { getFieldDecorator } = this.props.form;
     const colLayout = {
       xs: 24,
@@ -76,7 +86,7 @@ class Search extends Component {
             <Button icon="reload" style={{ marginLeft: 16 }} onClick={this.handleReset}>
               重置
             </Button>
-            <a style={{ marginLeft: 16, fontSize: 12, display: this.props.children && this.props.children.length >= count ? '' : 'none' }} onClick={this.toggle}>
+            <a style={{ marginLeft: 16, fontSize: 12, display: expandBtDisplay }} onClick={this.toggle}>
               {this.state.expand ? '收起' : '展开'} <Icon type={this.state.expand ? 'up' : 'down'} />
             </a>
           </Col>
