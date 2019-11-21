@@ -56,7 +56,7 @@ class BasicLayout extends Component {
         title={TITLE}
         onCollapse={this.handleMenuCollapse}
         menuItemRender={(menuItemProps, defaultDom) => {
-          if (menuItemProps.isUrl) {
+          if (menuItemProps.isUrl || menuItemProps.children) {
             return defaultDom;
           }
           return <Link onClick={() => this.menuClick(menuItemProps)} to={menuItemProps.path}>{defaultDom}</Link>;
