@@ -1,7 +1,7 @@
 # 介绍
 ## 文档地址
 
-[github.io](https://faster-framework.github.io/faster-framework-admin-guide)
+[文档地址](https://faster-framework.github.io/faster-framework-admin-guide)
 
 ## Faster-Admin是什么
 
