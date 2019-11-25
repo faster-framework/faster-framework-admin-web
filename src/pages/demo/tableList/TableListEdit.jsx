@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Input, Form } from 'antd';
 import FixedRow from '@/common/components/FixedRow';
 import UploadImg from '@/common/components/UploadImg';
+import Upload from '@/common/components/Upload';
 import request from '@/common/utils/request';
 import Editor from '@/common/components/BraftEditor';
 
@@ -34,6 +35,13 @@ class TableListEdit extends Component {
           <Form.Item label="上传图片">
             {getFieldDecorator('img', { rules: [] })(
               <UploadImg />
+            )}
+          </Form.Item>
+        </FixedRow>
+        <FixedRow upload>
+          <Form.Item label="上传文件">
+            {getFieldDecorator('files', { rules: [] })(
+              <Upload />
             )}
           </Form.Item>
         </FixedRow>
