@@ -43,25 +43,6 @@ const routes = [
       }
     ]
   },
-  {
-    path: '/demo',
-    name: '基本示例',
-    icon: 'smile',
-    routes: [
-      {
-        path: '/tableList',
-        name: '表格示例',
-        icon: 'smile',
-        component: './demo/tableList'
-      },
-      {
-        path: '/treeList',
-        name: '树形表格',
-        icon: 'smile',
-        component: './demo/treeList'
-      }
-    ]
-  },
   ...modules,
   {
     component: '../common/pages/404'
