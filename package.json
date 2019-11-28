@@ -4,7 +4,7 @@
   "private": true,
   "description": "后台管理通用模板",
   "scripts": {
-    "prod": "umi build",
+    "prod": "cross-env UMI_ENV=prod umi build",
     "test": "cross-env UMI_ENV=test umi build",
     "dev": "cross-env UMI_ENV=dev umi dev",
     "mock": "cross-env UMI_ENV=dev MOCK=true umi dev"

@@ -8,6 +8,7 @@ const plugins = [
   [
     'umi-plugin-react',
     {
+      dynamicImport: true,
       antd: true,
       dva: {
         hmr: true,
