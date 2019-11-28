@@ -170,11 +170,10 @@ export default class TablePro extends Component {
     const { children, ...otherPorps } = this.props;
     let tableChildren = [], tableAction = [];
     React.Children.forEach(this.props.children, item => {
-      if (item.type.name == 'Column' || item.type.name == 'ColumnGroup') {
-        tableChildren.push(item);
-      }
-      if (item.type.name == 'Action') {
+      if (item.type.displayName && item.type.displayName == 'ColumnAction') {
         tableAction.push(React.cloneElement((<Table.Column title='操作' key='col-action' {...item.props}></Table.Column>), { className: styles.tableAction }));
+      } else {
+        tableChildren.push(item);
       }
     })
     return (
