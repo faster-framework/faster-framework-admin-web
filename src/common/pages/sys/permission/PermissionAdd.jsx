@@ -16,7 +16,7 @@ class PermissionAdd extends Component {
       this.setState({
         permissionTrees: [{
           value: '0',
-          label: '根节点',
+          title: '根节点',
           children: treeUtils.convertTreeSelectData(response)
         }]
       });
