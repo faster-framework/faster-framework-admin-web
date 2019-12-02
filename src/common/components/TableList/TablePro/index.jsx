@@ -64,7 +64,7 @@ export default class TablePro extends Component {
     });
   }
   loadData(param) {
-    let filter = Object.assign({}, this.state.defaultParam, param);
+    let filter = Object.assign({}, this.props.defaultParam, param);
     filter = Object.assign({}, {
       current: this.state.pagination.current,
       size: this.state.pagination.pageSize
