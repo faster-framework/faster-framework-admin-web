@@ -59,7 +59,6 @@ export default class DictList extends Component {
           <Search>
             <Input label='字典名称' name='name' />
             <Input label='字典类型' name='type' />
-            <Input label='字典值' name='dictValue' />
             <Input label='字典描述' name='remark' />
           </Search>
           <Action>
