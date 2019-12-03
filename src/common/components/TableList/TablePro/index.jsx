@@ -60,7 +60,7 @@ export default class TablePro extends Component {
     });
     this.loadData({
       current: 1,
-      size: this.state.pagination.size
+      size: this.state.pagination.pageSize
     });
   }
   loadData(param) {
