@@ -11,6 +11,9 @@ export default class Action extends Component {
         <Col>
           {
             React.Children.map(this.props.children, (item, index) => {
+              if(!item){
+                return <></>;
+              }
               if (item.props.authority) {
                 const permissionChildren = React.Children.map(item.props.children, (permissionItem, index) => {
                   return React.cloneElement(permissionItem, { style: { marginRight: 16, marginBottom: 16 }, key: index })
