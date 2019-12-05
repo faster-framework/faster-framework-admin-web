@@ -7,6 +7,7 @@ import request from '@/common/utils/request'
 import Permission from '@/common/components/Permission';
 import DictAdd from './DictAdd';
 import DictEdit from './DictEdit';
+import DictSort from './DictSort';
 
 
 export default class DictList extends Component {
@@ -21,6 +22,9 @@ export default class DictList extends Component {
       <>
         <Permission authority="dict:modify">
           <a onClick={() => this.refs.editModal.show(record)}>修改</a>
+        </Permission>
+        <Permission authority="dict:modify">
+          <a onClick={() => this.refs.sortModal.show(record)}>设置顺序</a>
         </Permission>
         <Permission authority="dict:delete">
           <a onClick={() => this.delete(record)}>删除</a>
@@ -59,6 +63,7 @@ export default class DictList extends Component {
           <Search>
             <Input label='字典名称' name='name' />
             <Input label='字典类型' name='type' />
+            <Input label='字典值' name='dictValue' />
             <Input label='字典描述' name='remark' />
           </Search>
           <Action>
@@ -82,6 +87,9 @@ export default class DictList extends Component {
         </ModalInfo>
         <ModalInfo title='编辑字典' ref="editModal" {...this.refs}>
           <DictEdit />
+        </ModalInfo>
+        <ModalInfo title='设置顺序' ref="sortModal" {...this.refs}>
+          <DictSort />
         </ModalInfo>
       </GridContent >
     );
