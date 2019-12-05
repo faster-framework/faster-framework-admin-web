@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, Upload, Modal } from 'antd';
+import './index.less';
 
 class UploadImg extends Component {
   state = {
