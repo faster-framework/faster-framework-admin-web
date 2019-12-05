@@ -71,9 +71,9 @@ export default class DictList extends Component {
           </Action>
           <Table url='/sys/dict' defaultParam={{ showStatus: 1 }}>
             <Table.Column title="字典名称" dataIndex="name" />
-            <Table.Column title="字典值" dataIndex="dictValue" />
             <Table.Column title="字典类型" dataIndex="type" />
             <Table.Column title="描述" dataIndex="remark" />
+            <Table.Column title="排序" dataIndex="sort" />
             <Table.Action render={this.renderColAction}></Table.Action>
           </Table>
         </TableList >

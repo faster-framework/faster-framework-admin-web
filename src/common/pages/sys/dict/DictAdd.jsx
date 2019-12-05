@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Form, message } from 'antd';
+import { Input, Form, message,InputNumber } from 'antd';
 import FixedRow from '@/common/components/FixedRow';
 import request from '@/common/utils/request';
 
@@ -51,6 +51,13 @@ class DictAdd extends Component {
           <Form.Item label="描述">
             {
               getFieldDecorator("remark", { rules: [{}] })(<Input />)
+            }
+          </Form.Item>
+        </FixedRow>
+        <FixedRow>
+          <Form.Item label="顺序">
+            {
+              getFieldDecorator("sort", { })(<InputNumber />)
             }
           </Form.Item>
         </FixedRow>
