@@ -29,10 +29,8 @@ class TableList extends Component {
   render() {
     const children = React.Children.map(this.props.children, (item, index) => {
       const { children, ...otherPorps } = item.props;
-      if (item.type.displayName == 'Form(Search)') {
-        //搜索，需要绑定查询事件
-        otherPorps.handleSearch = this.handleSearch;
-      }
+      //搜索，需要绑定查询事件
+      otherPorps.handleSearch = this.handleSearch;
       otherPorps.onRef = this.bindRef;
       const newItem = React.cloneElement(item, otherPorps);
       return newItem;

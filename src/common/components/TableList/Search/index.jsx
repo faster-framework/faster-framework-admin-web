@@ -1,5 +1,6 @@
 import { Button, Col, Form, Row, Icon } from 'antd';
 import React, { Component } from 'react';
+import { value } from '@/common/utils/dict';
 
 
 class Search extends Component {
@@ -13,14 +14,24 @@ class Search extends Component {
     this.props.onRef('search', this)
   }
   handleSearch = e => {
+    const that = this;
     this.props.form.validateFields((err, values) => {
       let filterValues = {};
       Object.keys(values).filter(item => {
         return values[item] != '' && values[item] != undefined;
       }).forEach(item => {
-        filterValues[item] = values[item];
+        if(values[item].constructor.name == 'Moment'){
+          const originalProps = that.props.form.getFieldProps(item)["data-__meta"].originalProps;
+          if(originalProps.format){
+            filterValues[item] = values[item].format(originalProps.format);
+          }else{
+            filterValues[item] = values[item];
+          }
+        }else{
+          filterValues[item] = values[item];
+        }
       })
-      this.props.handleSearch(filterValues);
+      that.props.handleSearch(filterValues);
     });
   };
   handleReset = e => {
