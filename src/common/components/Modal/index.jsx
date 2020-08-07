@@ -43,7 +43,7 @@ class BaseModal extends Component {
     };
   }
   render() {
-    const { children, ...otherPorps } = this.props;
+    const { children, ...otherProps } = this.props;
     return (
       <Modal
         destroyOnClose
@@ -52,7 +52,7 @@ class BaseModal extends Component {
         maskClosable={false}
         onCancel={this.hide}
         onOk={this.ok}
-        {...otherPorps}
+        {...otherProps}
         visible={this.state.visible}
         className={this.props.width ? 'fit-modal' : 'fit-modal fit-modal-width'}
       >

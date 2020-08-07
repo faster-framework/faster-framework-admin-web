@@ -167,7 +167,7 @@ export default class TablePro extends Component {
     });
   }
   render() {
-    const { children, ...otherPorps } = this.props;
+    const { children, ...otherProps } = this.props;
     let tableChildren = [], tableAction = [];
     React.Children.forEach(this.props.children, item => {
       if (item.type.displayName && item.type.displayName == 'ColumnAction') {
@@ -190,7 +190,7 @@ export default class TablePro extends Component {
           onSelectInvert: this.onSelectInvert
         }}
         rowKey="id"
-        {...otherPorps}
+        {...otherProps}
       >
         {tableChildren}
         {tableAction}

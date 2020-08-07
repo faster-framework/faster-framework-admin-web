@@ -6,16 +6,16 @@ class FixedRow extends Component {
     super(props)
   }
   render() {
-    const { children, ...otherPorps } = this.props;
+    const { children, ...otherProps } = this.props;
     let className = 'fixed-row';
 
-    if (otherPorps.upload) {
+    if (otherProps.upload) {
       className = 'fixed-row-upload';
     }
-    if (otherPorps.editor) {
+    if (otherProps.editor) {
       className = 'fixed-row-editor';
     }
-    if(otherPorps.full){
+    if(otherProps.full){
       className = 'fixed-row-full';
     }
     return (

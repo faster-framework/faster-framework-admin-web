@@ -58,6 +58,7 @@ class UploadImg extends Component {
   };
   render() {
     const { previewVisible, previewImage, fileList } = this.state;
+    const { children, ...otherProps } = this.props;
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -73,6 +74,7 @@ class UploadImg extends Component {
           onChange={this.handleChange}
           onPreview={this.handlePreview}
           accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+          {...otherProps}
         >
           {fileList.length >= this.maxFile ? null : uploadButton}
         </Upload>

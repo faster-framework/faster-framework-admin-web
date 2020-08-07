@@ -28,11 +28,11 @@ class TableList extends Component {
   }
   render() {
     const children = React.Children.map(this.props.children, (item, index) => {
-      const { children, ...otherPorps } = item.props;
+      const { children, ...otherProps } = item.props;
       //搜索，需要绑定查询事件
-      otherPorps.handleSearch = this.handleSearch;
-      otherPorps.onRef = this.bindRef;
-      const newItem = React.cloneElement(item, otherPorps);
+      otherProps.handleSearch = this.handleSearch;
+      otherProps.onRef = this.bindRef;
+      const newItem = React.cloneElement(item, otherProps);
       return newItem;
     });
     return (

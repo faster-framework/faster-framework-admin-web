@@ -49,6 +49,7 @@ class UploadFile extends Component {
   }
   render() {
     const { fileList } = this.state;
+    const { children, ...otherProps } = this.props;
     const uploadButton = (
       <Button>
         <Icon type="upload" />Upload
@@ -59,7 +60,9 @@ class UploadFile extends Component {
         <Upload
           action={BASE_API + '/upload'}
           fileList={this.state.fileList}
-          onChange={this.handleChange}>
+          onChange={this.handleChange}
+          {...otherProps}
+          >
           {fileList.length >= this.maxFile ? null : uploadButton}
         </Upload>
       </div>
