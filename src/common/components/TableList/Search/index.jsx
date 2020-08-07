@@ -20,15 +20,26 @@ class Search extends Component {
       Object.keys(values).filter(item => {
         return values[item] != '' && values[item] != undefined;
       }).forEach(item => {
-        if(values[item].constructor.name == 'Moment'){
+        //如果是时间范围查询
+        if (Array.isArray(values[item]) && values[item][0].constructor.name == 'Moment') {
           const originalProps = that.props.form.getFieldProps(item)["data-__meta"].originalProps;
-          if(originalProps.format){
+          const moment1 = values[item][0];
+          const moment2 = values[item][1];
+          const moment1Value = moment1.format(originalProps.format);
+          const moment2Value = moment2.format(originalProps.format);
+
+          const startName = originalProps.startName ? originalProps.startName : 'start';
+          filterValues[startName] = moment1Value;
+          const endName = originalProps.endName ? originalProps.endName : 'end';
+          filterValues[endName] = moment2Value;
+        } else {
+          //如果是普通时间查询
+          if (values[item].constructor.name == 'Moment') {
+            const originalProps = that.props.form.getFieldProps(item)["data-__meta"].originalProps;
             filterValues[item] = values[item].format(originalProps.format);
-          }else{
+          } else {
             filterValues[item] = values[item];
           }
-        }else{
-          filterValues[item] = values[item];
         }
       })
       that.props.handleSearch(filterValues);
@@ -44,11 +55,11 @@ class Search extends Component {
   render() {
     const count = this.state.expand ? React.Children.count(this.props.children) : 4;
     let expandBtDisplay = 'none';
-    if(this.props.children){
-      if(this.state.expand == false && this.props.children.length>count){
+    if (this.props.children) {
+      if (this.state.expand == false && this.props.children.length > count) {
         expandBtDisplay = '';
       }
-      if(this.state.expand && this.props.children.length>=count){
+      if (this.state.expand && this.props.children.length >= count) {
         expandBtDisplay = '';
       }
     }
