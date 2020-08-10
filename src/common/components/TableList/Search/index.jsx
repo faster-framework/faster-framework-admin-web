@@ -21,20 +21,20 @@ class Search extends Component {
         return values[item] != '' && values[item] != undefined;
       }).forEach(item => {
         //如果是时间范围查询
-        if (Array.isArray(values[item]) && values[item][0].constructor.name == 'Moment') {
+        if (Array.isArray(values[item]) && values[item][0]._isAMomentObject) {
           const originalProps = that.props.form.getFieldProps(item)["data-__meta"].originalProps;
           const moment1 = values[item][0];
           const moment2 = values[item][1];
           const moment1Value = moment1.format(originalProps.format);
           const moment2Value = moment2.format(originalProps.format);
 
-          const startName = originalProps.startName ? originalProps.startName : 'start';
-          filterValues[startName] = moment1Value;
-          const endName = originalProps.endName ? originalProps.endName : 'end';
-          filterValues[endName] = moment2Value;
+          const startName = originalProps.startName?originalProps.startName:'start';
+          filterValues[startName] =  moment1Value;
+          const endName = originalProps.endName?originalProps.endName:'end';
+          filterValues[endName] =  moment2Value;
         } else {
           //如果是普通时间查询
-          if (values[item].constructor.name == 'Moment') {
+          if (values[item][0]._isAMomentObject) {
             const originalProps = that.props.form.getFieldProps(item)["data-__meta"].originalProps;
             filterValues[item] = values[item].format(originalProps.format);
           } else {
@@ -76,7 +76,7 @@ class Search extends Component {
     const formItemLayout = {
       labelCol: {
         xs: 24,
-        sm: 8,
+        sm: 6,
       },
       wrapperCol: {
         xs: 24,
@@ -85,7 +85,7 @@ class Search extends Component {
     };
     return (
       <Form style={{ marginBottom: 16 }} {...formItemLayout}>
-        <Row gutter={64}>
+        <Row gutter={32}>
           {
             React.Children.map(this.props.children, (item, index) => {
               return (
