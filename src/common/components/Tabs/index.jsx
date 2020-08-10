@@ -120,7 +120,14 @@ class TabsPro extends Component {
     )
   }
 
-
+  renderTabeContent = (children, currentTab, globalLoading) => {
+    if (children.props.location.pathname != currentTab.path) {
+      return <></>
+    }
+    return <Spin size="large" spinning={globalLoading}>
+      {children}
+    </Spin>
+  }
   render() {
     const { children, globalLoading, tabList, activeTab, routing, dispatch } = this.props;
     return (
@@ -130,12 +137,13 @@ class TabsPro extends Component {
             {tabList.map((item, index) => {
               return (
                 <TabPane tab={this.renderTabName(item.name, item.path, index)} key={item.path}>
-                  <Spin size="large" spinning={globalLoading}>
-                    {children}
-                  </Spin>
+                  {
+                    this.renderTabeContent(children, item, globalLoading)
+                  }
                 </TabPane>
               )
-            })}</Tabs>
+            })}
+          </Tabs>
         }
       </div>
     )

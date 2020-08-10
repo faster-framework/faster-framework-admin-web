@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Modal } from 'antd';
+import { Modal,Spin } from 'antd';
 import styles from './index.less'
+import ModelContent from './Content';
 
 class BaseModal extends Component {
   state = {
@@ -30,7 +31,7 @@ class BaseModal extends Component {
   ok = () => {
     if (this.form) {
       this.form.onOk(this)
-    }else{
+    } else {
       this.refs.modalInfo.onOk(this);
     }
   }
@@ -43,7 +44,7 @@ class BaseModal extends Component {
     };
   }
   render() {
-    const { children, ...otherProps } = this.props;
+    const { children, globalLoading, ...otherProps } = this.props;
     return (
       <Modal
         destroyOnClose
@@ -56,11 +57,7 @@ class BaseModal extends Component {
         visible={this.state.visible}
         className={this.props.width ? 'fit-modal' : 'fit-modal fit-modal-width'}
       >
-        <div className='fit-modal-content'>
-          {React.Children.map(children, (item, index) => {
-            return React.cloneElement(item, { wrappedComponentRef: this.wrappedComponentRef, currentRecord: this.state.currentRecord,ref:"modalInfo" })
-          })}
-        </div>
+        <ModelContent children={children} wrappedComponentRef={this.wrappedComponentRef} currentRecord={this.state.currentRecord}/>
       </Modal >
     );
   }
