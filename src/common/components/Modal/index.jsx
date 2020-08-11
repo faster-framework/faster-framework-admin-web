@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal,Spin } from 'antd';
+import { Modal, Spin } from 'antd';
 import styles from './index.less'
 import ModelContent from './Content';
 
@@ -11,7 +11,9 @@ class BaseModal extends Component {
     super(props);
 
   }
-
+  bindRef = (name, ref) => {
+    this[name] = ref;
+  }
   hide = () => {
     this.setState({
       visible: false
@@ -32,7 +34,7 @@ class BaseModal extends Component {
     if (this.form) {
       this.form.onOk(this)
     } else {
-      this.refs.modalInfo.onOk(this);
+      this.modelcontent.ok();
     }
   }
   wrappedComponentRef = (form) => {
@@ -57,7 +59,9 @@ class BaseModal extends Component {
         visible={this.state.visible}
         className={this.props.width ? 'fit-modal' : 'fit-modal fit-modal-width'}
       >
-        <ModelContent children={children} wrappedComponentRef={this.wrappedComponentRef} currentRecord={this.state.currentRecord}/>
+        <ModelContent model={this} onRef={this.bindRef} wrappedComponentRef={this.wrappedComponentRef} currentRecord={this.state.currentRecord} >
+          {children}
+        </ModelContent>
       </Modal >
     );
   }

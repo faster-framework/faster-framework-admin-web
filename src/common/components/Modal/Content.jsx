@@ -7,6 +7,12 @@ class ModelContent extends Component {
     super(props);
 
   }
+  ok = () => {
+    this.refs.modalInfo.onOk(this.props.model);
+  }
+  componentDidMount() {
+    this.props.onRef('modelcontent', this)
+  }
   render() {
     const { children, globalLoading, ...otherProps } = this.props;
     return (
