@@ -8,7 +8,11 @@ class ModelContent extends Component {
 
   }
   ok = () => {
-    this.refs.modalInfo.onOk(this.props.model);
+    if (this.refs.modalInfo && this.refs.modalInfo.onOk) {
+      this.refs.modalInfo.onOk(this.props.model);
+    }else{
+      this.props.model.hide();
+    }
   }
   componentDidMount() {
     this.props.onRef('modelcontent', this)
