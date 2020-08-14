@@ -26,7 +26,7 @@ export default class TablePro extends Component {
     },
     total: 0,
     pageSize: 10,
-    current: 0
+    current: 1
   }
   constructor(props) {
     super(props)
@@ -82,6 +82,8 @@ export default class TablePro extends Component {
       } else {
         const pagination = { ...this.state.pagination };
         pagination.total = res.total;
+        pagination.current = filter.current;
+        pagination.pageSize = filter.size;
         this.setState({
           data: res.records,
           pagination: pagination

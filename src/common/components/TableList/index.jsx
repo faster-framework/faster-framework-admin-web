@@ -12,6 +12,8 @@ class TableList extends Component {
     this[name] = ref;
   }
   handleSearch = (values) => {
+    values.current = this.table.state.current;
+    values.size = this.table.state.pageSize;
     this.table.loadData(values);
   }
   currentSelectRows = (record) => {
